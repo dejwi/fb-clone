@@ -5,11 +5,17 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
 const passport = require('passport');
+const helmet = require('helmet');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 
-
+app.use(helmet());
+app.use(cors({
+  origin: (origin, cb) => cb(null, origin),
+  credentials: true
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
