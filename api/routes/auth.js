@@ -15,7 +15,7 @@ router.get('/facebook/callback',
 router.get('/me', (req, res, next) => {
    if (!req.isAuthenticated()) return res.status(401).json({ msg: 'Not Authenticated'});
    const facebook_id = req.user.facebook_id;
-   User.find({ facebook_id })
+   User.findOne({ facebook_id })
        //.populate('User') TODO: FIX
        .then( user => res.json(user));
 });
