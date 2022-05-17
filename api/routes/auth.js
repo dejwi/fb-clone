@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const passport = require('passport');
 require('dotenv').config();
-const User = require('../models/user');
+const checkAuth = require('../middleware/checkAuth');
+
+const authUserController = require('../controllers/authUser');
 
 router.get('/facebook', passport.authenticate('facebook'));
 
@@ -12,12 +14,7 @@ router.get('/facebook/callback',
     })
 );
 
-router.get('/me', (req, res, next) => {
-   if (!req.isAuthenticated()) return res.status(401).json({ msg: 'Not Authenticated'});
-   const facebook_id = req.user.facebook_id;
-   User.findOne({ facebook_id })
-       //.populate('User') TODO: FIX
-       .then( user => res.json(user));
-});
+router.get('/me', checkAuth, authUserController.me);
+router.put('/me', checkAuth, authUserController.me_update);
 
 module.exports = router;
