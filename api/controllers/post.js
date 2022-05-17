@@ -34,3 +34,27 @@ exports.post_new = [
         post.save(err => err && next(err));
     }
 ];
+
+exports.delete = (req, res, next) => {
+    Post.findById(req.params.id).then(post => {
+        if (!post) return res.status(404).json({msg: "Not found"});
+        if (post.author !== req.user._id) return res.status(401).json({error: "You are not the author of this post"});
+
+        Post.findByIdAndRemove(req.params.id)
+            .then(doc => res.json(doc))
+            .catch(err => next(err));
+    }).catch(err => next(err));
+};
+
+exports.post_comment = [
+    body('content', 'Comment content is required').trim().isLength({min:1}).escape(),
+    (req, res, next) => {
+        const err = validationResult(req);
+        if (!err.isEmpty()) return res.status(409).json({error: err.array()});
+
+        const contents = { content: req.body.content, author: req.user._id };
+        Post.findByIdAndUpdate(req.params.id, {$push: { comments: contents }})
+            .then( doc => res.json(doc))
+            .catch(err => next(err));
+    }
+];
