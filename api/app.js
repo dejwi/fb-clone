@@ -3,10 +3,13 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
-const indexRouter = require('./routes/index');
+const session = require('express-session');
+const passport = require('passport');
+require('dotenv').config();
 
 const app = express();
+
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -14,9 +17,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: process.env.SECRET
+}));
+
 // Init mongodb
 require('./config/mongodb');
 
+// Init passport
+require('./config/passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// Routes
+const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
+
+app.use('/auth', authRouter);
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
