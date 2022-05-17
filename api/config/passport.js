@@ -11,17 +11,16 @@ passport.use(new FacebookStrategy({
         profileFields: ['id', 'displayName', 'picture.type(large)']
     },
     (accessToken, refreshToken, profile, done) => {
-        User.find( { facebook_id: profile.id} ).then( user => {
+        User.findOne( { facebook_id: profile.id} ).then( user => {
             if (user) return done(null, user);
 
             const newUser = new User({
+                username: profile.displayName,
                 facebook_id: profile.id,
                 picUrl: profile.photos[0].value
             });
-            newUser.save();
-            done(null, newUser);
+            newUser.save( err => done(err, newUser) );
         }).catch(err => done(err));
-        done(null, {...profile});
     }
 ));
 
