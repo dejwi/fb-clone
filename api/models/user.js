@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+    username: { type: String, required: true },
     facebook_id: { type: String, required: true },
     picUrl: { type: String, required: true },
     friends: [ { type: Schema.Types.ObjectId, ref: 'User' } ],
