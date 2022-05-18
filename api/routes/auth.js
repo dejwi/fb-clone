@@ -14,7 +14,10 @@ router.get('/facebook/callback',
     })
 );
 
-router.get('/me', checkAuth, authUserController.me);
-router.put('/me', checkAuth, authUserController.me_update);
+router.get('/info', checkAuth, authUserController.me);
+router.put('/info', checkAuth, authUserController.me_update);
+
+router.post('/addFriend/:id', checkAuth, authUserController.sendFriendReq);
+router.post('/acceptFriend/:id', checkAuth, authUserController.acceptFriendReq);
 
 module.exports = router;
