@@ -20,4 +20,6 @@ router.put('/info', checkAuth, authUserController.me_update);
 router.post('/addFriend/:id', checkAuth, authUserController.sendFriendReq);
 router.post('/acceptFriend/:id', checkAuth, authUserController.acceptFriendReq);
 
+router.get('/logout', checkAuth, authUserController.logout);
+
 module.exports = router;

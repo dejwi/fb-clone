@@ -39,3 +39,8 @@ exports.acceptFriendReq = (req, res, next) => {
                 .catch(err => next(err));
         }).catch(err => next(err));
 };
+
+exports.logout = (req, res) => {
+  req.logout();
+  res.json({msg: 'Logged out'});
+};
