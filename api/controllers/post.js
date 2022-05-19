@@ -3,7 +3,7 @@ const {body, validationResult} = require('express-validator');
 
 exports.get_single = (req, res, next) => {
     Post.findById(req.params.id)
-        .populate('User')
+        .populate('author')
         .populate({path: 'comments.author'})
         .then(post => {
             if (!post) return res.status(404).json({msg: 'Not found'});
@@ -12,10 +12,11 @@ exports.get_single = (req, res, next) => {
 };
 
 exports.get_latest = (req, res, next) => {
-  Post.find()
+  Post.find({})
       .sort({date: 1})
       .limit(12)
-      .populate('User')
+      .populate('author')
+        .populate({path: 'comments.author'})
       .then(posts => {
           res.json(posts);
       }).catch(err => next(err));
@@ -32,6 +33,7 @@ exports.post_new = [
             content: req.body.content
         });
         post.save(err => err && next(err));
+        res.json(post);
     }
 ];
 
