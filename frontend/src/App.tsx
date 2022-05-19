@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
 import {userContext} from "./userContext";
 import { DotPulse } from "@uiball/loaders";
+
+import Login from "./pages/Login";
+import Feed from './pages/Feed'
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_BACKEND as string;
@@ -30,7 +32,9 @@ const App: React.FC = () => {
 
   return (<div className='bg-stone-100 h-screen'>{
     isLoading ?
-        <div className='h-screen flex justify-center items-center'><DotPulse color={'#181818'}/></div> :
+        <div className='h-screen flex justify-center items-center'>
+          <DotPulse color={'#181818'}/>
+        </div> :
 
         <userContext.Provider value={user}>
           <BrowserRouter>
@@ -38,9 +42,7 @@ const App: React.FC = () => {
               {!isAuth ? <Route path='/*' element={<Login/>}/> : <>
 
                 <Route path='/#_=_' element={<Navigate to='/' replace/>}/>
-                <Route path='/' element={<>
-                  <h2>{user?.username}</h2>
-                </>}/>
+                <Route path='/' element={ <Feed/> }/>
               </>}
             </Routes>
           </BrowserRouter>

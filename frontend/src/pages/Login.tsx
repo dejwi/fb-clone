@@ -3,7 +3,7 @@ import { ReactComponent as FbLogo } from '../svg/fblogo.svg';
 import {motion} from "framer-motion";
 
 const animeOpts = {
-    initial:{ y: "-1.5rem" , opacity: 0},
+    initial:{ y: -16 , opacity: 0},
     animate:{ y: 0, opacity: 1},
     transition:{ type: 'spring', delay: 0.2, duration: 2}
 };
