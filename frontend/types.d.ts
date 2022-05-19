@@ -1,5 +1,6 @@
 /// <reference types="react-scripts" />
 interface UserType {
+    _id: string,
     username: string,
     facebook_id: string,
     picUrl: string,
@@ -10,7 +11,8 @@ interface UserType {
 }
 
 interface PostType {
-    author: string | UserType,
+    _id: string,
+    author: UserType | string,
     likes: number,
     content: string,
     picUrl?: string,
