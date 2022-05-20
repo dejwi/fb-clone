@@ -33,7 +33,7 @@ const App: React.FC = () => {
           <DotPulse color={'#181818'}/>
         </div> :
 
-        <userContext.Provider value={user}>
+        <userContext.Provider value={{ user, setUser: (updt)=>setUser(updt) } }>
           <BrowserRouter>
             <Routes>
               {!isAuth ? <Route path='/*' element={<Login/>}/> : <>
