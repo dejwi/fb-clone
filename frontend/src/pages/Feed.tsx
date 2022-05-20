@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import Nav from '../components/Nav'
-import Post from '../components/Feed/Post';
-import Top from '../components/Feed/Top';
-import Post_skeleton from '../components/Feed/Post-skeleton';
+import Post from '../components/Feed/Post/Post';
+import Top from '../components/Feed/PostNew/Top';
+import Post_skeleton from '../components/Feed/Post/Post-skeleton';
 import {AnimatePresence} from 'framer-motion';
 import fetchApi from '../helpers/fetchApi'
 

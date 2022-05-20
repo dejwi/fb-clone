@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form'
-import fetchApi from '../../helpers/fetchApi'
+import fetchApi from '../../../helpers/fetchApi'
 
 interface prop {
   hide: () => void,
