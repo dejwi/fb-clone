@@ -1,30 +1,79 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import {userContext} from '../userContext'
 import { ReactComponent as FbLogo} from '../svg/fblogo.svg';
 import { ReactComponent as SearchIcon} from '../svg/search.svg';
 import { ReactComponent as HomeIcon} from '../svg/home.svg';
-import { motion } from 'framer-motion'
-
-const animeOpts = {
-  initial:{ y: -4, opacity: 0},
-  animate:{ y: 0, opacity: 1},
-  transition:{ type: 'spring', delay: 0.2, duration: 1.2}
-};
+import { motion, useAnimation } from 'framer-motion'
 
 const Nav: React.FC = () => {
   const user = useContext(userContext);
 
-  return (<motion.nav className='sticky top-0 grid grid-cols-nav bg-white drop-shadow-sm py-1 items-center px-2.5'
-                      {...animeOpts}>
+  const control = useAnimation();
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [show, setShow] = useState(true);
+
+  const navVariant = {
+    initial: {
+      y: -4,
+      opacity: 0
+    },
+    loaded: {
+      y: 0,
+      opacity: 1,
+      transition: { type: 'spring', delay: 0.2, duration: 1.2}
+    },
+    hide: {
+      opacity: 0,
+      y: -20 ,
+      transition: { duration: 0.15},
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.15},
+    },
+  };
+
+  useEffect(()=>{
+
+    if (show)
+      control.start('show');
+    else
+      control.start('hide');
+  },[show]);
+
+  useEffect(()=> {
+    control.start('loaded');
+  },[]);
+
+  const controlNavbar = () => {
+    if (typeof window !== 'undefined') {
+      if (window.scrollY > lastScrollY) { // if scroll down hide the navbar
+        setShow(false);
+      } else { // if scroll up show the navbar
+        setShow(true);
+      }
+
+      // remember current page location to use in the next move
+      setLastScrollY(window.scrollY);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar);
+
+      // cleanup function
+      return () => {
+        window.removeEventListener('scroll', controlNavbar);
+      };
+    }
+  }, [lastScrollY]);
+
+  return (<motion.nav className={`sticky top-0 grid grid-cols-nav bg-white drop-shadow-sm py-1 items-center px-2.5`}
+                      variants={navVariant} initial={'initial'} animate={control}>
     <div className='flex'>
       <FbLogo className='w-10 h-10'/>
-      {/* TODO: Maybe add search bar */}
-      {/*<div className='flex items-center hidden'>*/}
-      {/*  <div className='bg-neutral-600 py-1.5 pl-2 pr-4 rounded-lg'>*/}
-      {/*    <SearchIcon className='w-4 h-4 fill-zinc-300'/>*/}
-      {/*  </div>*/}
-      {/*  <input type='text' placeholder='Search' className='hidden'/>*/}
-      {/*</div>*/}
     </div>
 
     <HomeIcon className='fill-neutral-800 justify-self-center'/>
