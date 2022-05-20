@@ -19,11 +19,8 @@ const App: React.FC = () => {
       setAuth(res.ok);
       setLoading(false);
 
-      if(res.ok) {
-        const data = await res.json();
-        setUser(data);
-        console.log(data);
-      }
+      if(res.ok)
+        setUser(await res.json());
     })();
   },[]);
 
