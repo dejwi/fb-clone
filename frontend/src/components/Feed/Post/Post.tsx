@@ -19,9 +19,10 @@ const animeOpts = {
 };
 
 const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, likes, picUrl, comments, _id}) => {
-  const user = useContext(userContext);
+  const {user} = useContext(userContext) as UserContext;
   const input = useRef<HTMLInputElement | null>(null);
   const [_comments, _setComments] = useState(comments);
+  const [showCount, setShowCount] = useState(3);
 
   // Added sa user doesnt have to re-fetch whole post when commenting
   const addLocalComment = (content: string) => {
@@ -62,8 +63,12 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
 
     {!!_comments.length && <>
       <div className='flex flex-col gap-2 mt-1.5 mb-2'>
-        {_comments.slice(-3).reverse().map(data => <Comment {...data} key={data['author'] + data['content']}/> )}
+        {_comments.slice(-showCount).reverse().map(data => <Comment {...data} key={data['author'] + data['content']}/> )}
       </div>
+      {_comments.length > showCount &&
+        <button onClick={()=>setShowCount(showCount+2)}
+        className='float-left max-w-max -mt-1.5 text-sm text-neutral-500' >View more comments</button>
+      }
       <hr/>
     </>}
 
