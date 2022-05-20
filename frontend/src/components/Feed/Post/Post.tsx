@@ -1,13 +1,16 @@
-import React, {useContext, useRef} from 'react';
-import niceDate from '../../helpers/niceDate';
-import { userContext } from '../../userContext';
+import React, {useContext, useRef, useState } from 'react';
+import niceDate from '../../../helpers/niceDate';
+import { userContext } from '../../../userContext';
 import Comment from './Comment';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import CommentNew from './CommentNew';
 
-import {ReactComponent as LikeIcon} from '../../svg/like.svg';
-import {ReactComponent as CommentIcon} from '../../svg/comment.svg';
-import {ReactComponent as ShareIcon} from '../../svg/share.svg';
+import {ReactComponent as LikeIcon} from '../../../svg/like.svg';
+import {ReactComponent as CommentIcon} from '../../../svg/comment.svg';
+import {ReactComponent as ShareIcon} from '../../../svg/share.svg';
+import likeBlue from '../../likeBlue';
+import LikeBlue from '../../likeBlue'
 
 const animeOpts = {
   initial:{ y: -4 , opacity: 0},
@@ -15,9 +18,17 @@ const animeOpts = {
   transition:{ type: 'spring', duration: 0.6}
 };
 
-const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, likes, picUrl, comments}) => {
+const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, likes, picUrl, comments, _id}) => {
   const user = useContext(userContext);
   const input = useRef<HTMLInputElement | null>(null);
+  const [_comments, _setComments] = useState(comments);
+
+  // Added sa user doesnt have to re-fetch whole post when commenting
+  const addLocalComment = (content: string) => {
+    const newComment = { author: user , content };
+
+    _setComments([..._comments, newComment] as unknown as []);
+  };
 
   const iconClass = 'w-5 h-5 mr-0.5 fill-neutral-400';
   const btnClass = 'flex items-center text-neutral-500 hover:bg-neutral-100 px-4 py-0.5 rounded-md text-[0.85rem] ';
@@ -36,6 +47,11 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
     {/*TODO: styling - it was a fast add*/}
     {!!picUrl && <img src={picUrl}/>}
 
+    <div className='mt-0.5'>
+      {!!likes && <span className='flex gap-0.5 float-left'><LikeBlue/>{likes}</span>}
+      {!!_comments.length && <span className='float-right text-neutral-600'>{_comments.length} Comments</span>}
+    </div>
+
     <hr className='mt-1.5'/>
     <div className='flex justify-between py-1'>
       <button className={btnClass}><LikeIcon className={iconClass}/> Like</button>
@@ -44,17 +60,14 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
     </div>
     <hr/>
 
-    {!!comments.length && <>
+    {!!_comments.length && <>
       <div className='flex flex-col gap-2 mt-1.5 mb-2'>
-        {comments.slice(0,3).map(data => <Comment {...data} key={data['author'] + data['content']}/> )}
+        {_comments.slice(-3).reverse().map(data => <Comment {...data} key={data['author'] + data['content']}/> )}
       </div>
       <hr/>
     </>}
 
-    <div className='flex items-center mt-2'>
-      <img alt='avatar' src={user?.picUrl} className='w-6 h-6 rounded-full'/>
-      <input ref={input} type='text' placeholder='Write a comment...' className='bg-zinc-100 placeholder:text-neutral-500 py-0.5 pl-2.5 ml-2 rounded-xl flex-1 focus:outline-0'/>
-    </div>
+    <CommentNew picUrl={user?.picUrl as string} refInput={input} postId={_id} addLocalComment={addLocalComment}/>
 
   </motion.article>);
 };
