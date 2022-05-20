@@ -1,28 +1,48 @@
-import React, {useContext, useRef, useState } from 'react';
+import React, {useContext, useRef, useState, useEffect } from 'react';
 import niceDate from '../../../helpers/niceDate';
 import { userContext } from '../../../userContext';
 import Comment from './Comment';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import CommentNew from './CommentNew';
+import FetchApi from '../../../helpers/fetchApi'
 
 import {ReactComponent as LikeIcon} from '../../../svg/like.svg';
 import {ReactComponent as CommentIcon} from '../../../svg/comment.svg';
 import {ReactComponent as ShareIcon} from '../../../svg/share.svg';
-import likeBlue from '../../likeBlue';
-import LikeBlue from '../../likeBlue'
+import LikeBlue from '../../likeBlue';
+import fetchApi from '../../../helpers/fetchApi'
 
-const animeOpts = {
-  initial:{ y: -4 , opacity: 0},
-  animate:{ y: 0, opacity: 1},
-  transition:{ type: 'spring', duration: 0.6}
-};
+
 
 const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, likes, picUrl, comments, _id}) => {
-  const {user} = useContext(userContext) as UserContext;
+  const {user, setUser} = useContext(userContext) as UserContext;
   const input = useRef<HTMLInputElement | null>(null);
   const [_comments, _setComments] = useState(comments);
   const [showCount, setShowCount] = useState(3);
+  const [isLiked, setIsLiked] = useState<boolean>(user?.liked.includes(_id as never) as boolean);
+  const [likeCount, setLikeCount] = useState(likes);
+  const likeControl = useAnimation();
+
+  const animeOpts = {
+    initial:{ y: -4 , opacity: 0},
+    animate:{ y: 0, opacity: 1},
+    transition:{ type: 'spring', duration: 0.6}
+  };
+
+  const likeVariants = {
+    liked: {
+      fill: '#0188e0',
+      color: '#1197f5',
+    },
+    notLiked: {
+      fill: '#a3a3a3',
+      color: '#a3a3a3',
+    },
+    tap: {
+      scale: 1.05,
+    },
+  };
 
   // Added sa user doesnt have to re-fetch whole post when commenting
   const addLocalComment = (content: string) => {
@@ -31,8 +51,33 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
     _setComments([..._comments, newComment] as unknown as []);
   };
 
-  const iconClass = 'w-5 h-5 mr-0.5 fill-neutral-400';
-  const btnClass = 'flex items-center text-neutral-500 hover:bg-neutral-100 px-4 py-0.5 rounded-md text-[0.85rem] ';
+  const LikeBtnClick = () => {
+    const method = !isLiked ? 'POST' : 'DELETE';
+
+    fetchApi(`/post/${_id}/like`,method);
+    // Update context just in case
+    if (!isLiked){
+      //add
+      setUser({...user, liked: [...user?.liked as [], _id]});
+      setLikeCount(likeCount+1);
+    }else{
+      //remove
+      const filtered = user?.liked.filter(e => e !== _id);
+      setUser({...user, liked: filtered});
+      setLikeCount(likeCount-1);
+    }
+    setIsLiked(!isLiked);
+  };
+
+  useEffect(()=>{
+    if(isLiked)
+      likeControl.start('liked');
+    else
+      likeControl.start('notLiked');
+  },[isLiked]);
+
+  const iconClass = 'w-4 h-4 mr-0.5 fill-neutral-400 mt-0.5';
+  const btnClass = 'flex items-center text-neutral-500 px-4 py-1 transition-[background] hover:bg-neutral-100 -my-0.5 rounded-md text-[0.85rem] ';
 
   return (<motion.article className='w-[21.5rem] flex flex-col bg-white p-2.5 shadow rounded-md' {...animeOpts}>
     <div className='flex items-center'>
@@ -46,16 +91,19 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
     <p className='mt-1'>{content}</p>
 
     {/*TODO: styling - it was a fast add*/}
-    {!!picUrl && <img src={picUrl}/>}
+    {!!picUrl && <img src={picUrl} className='mb-1'/>}
 
-    <div className='mt-0.5'>
-      {!!likes && <span className='flex gap-0.5 float-left'><LikeBlue/>{likes}</span>}
-      {!!_comments.length && <span className='float-right text-neutral-600'>{_comments.length} Comments</span>}
+    <div className='flex items-center justify-between'>
+      {!!likeCount && <span className='flex items-center gap-0.5 float-left text-sm'><LikeBlue/>{likeCount}</span>}
+      {!!_comments.length && <span className='flex text-neutral-500 text-sm '>{_comments.length} Comments</span>}
     </div>
 
-    <hr className='mt-1.5'/>
+    {/*TODO: MAYBE MOVE THIS TO SEPARATE COMPONENT*/}
+    <hr className='mt-1'/>
     <div className='flex justify-between py-1'>
-      <button className={btnClass}><LikeIcon className={iconClass}/> Like</button>
+      <motion.button className={btnClass} animate={likeControl} variants={likeVariants} whileTap='tap' onClick={LikeBtnClick}>
+        <LikeIcon className={'w-4 h-4 mr-0.5'}/> Like
+      </motion.button>
       <button className={btnClass} onClick={()=>input.current!.focus()}><CommentIcon className={iconClass}/>Comment</button>
       <button className={btnClass}><ShareIcon className={iconClass}/> Share</button>
     </div>
