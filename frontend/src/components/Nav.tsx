@@ -23,12 +23,10 @@ const Nav: React.FC = () => {
       transition: { type: 'spring', delay: 0.2, duration: 1.2}
     },
     hide: {
-      opacity: 0,
       y: '-100%' ,
       transition: { duration: 0.22},
     },
     show: {
-      opacity: 1,
       y: 0,
       transition: { duration: 0.22},
     },
