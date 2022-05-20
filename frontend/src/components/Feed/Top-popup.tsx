@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form'
+import fetchApi from '../../helpers/fetchApi'
 
 interface prop {
   hide: () => void,
@@ -9,20 +10,15 @@ const Top_popup: React.FC<prop> = ({hide}) => {
   const { register, handleSubmit } = useForm();
   const apiUrl = process.env.REACT_APP_BACKEND as string;
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = (data: any) => {
+    if (!data.content) return;
+
     const formData = new FormData();
     formData.append('content', data.content);
     formData.append('file', data.image[0]);
 
-    const res = await fetch(`${apiUrl}/post`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Accept': '*/*',
-      },
-      body: formData,
-    });
-    // end
+    fetchApi('/post', 'POST', formData)
+      .then(() => hide());
   };
 
   return (<div onClick={()=>hide()} className='fixed top-0 left-0 bg-neutral-600 bg-opacity-20 h-screen w-full'>

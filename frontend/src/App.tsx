@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import {userContext} from "./userContext";
 import { DotPulse } from "@uiball/loaders";
+import fetchApi from './helpers/fetchApi'
 
 import Login from "./pages/Login";
 import Feed from './pages/Feed'
@@ -14,14 +15,10 @@ const App: React.FC = () => {
 
   useEffect(()=>{
     (async () =>{
-      const res = await fetch(`${apiUrl}/auth/info`, {
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-        },
-      });
+      const res = await fetchApi('/auth/info');
       setAuth(res.ok);
       setLoading(false);
+
       if(res.ok) {
         const data = await res.json();
         setUser(data);

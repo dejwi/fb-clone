@@ -4,6 +4,7 @@ import Post from '../components/Feed/Post';
 import Top from '../components/Feed/Top';
 import Post_skeleton from '../components/Feed/Post-skeleton';
 import {AnimatePresence} from 'framer-motion';
+import fetchApi from '../helpers/fetchApi'
 
 interface _PostType extends PostType {
   author: UserType
@@ -15,12 +16,7 @@ const Feed: React.FC = () => {
 
   useEffect(()=>{
     (async()=>{
-      const res = await fetch(`${apiUrl}/post`, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
+      const res = await fetchApi('/post');
       const data = await res.json();
       console.log(data);
       setPosts(data);
