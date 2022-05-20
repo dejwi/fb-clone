@@ -1,5 +1,14 @@
 const Post = require('../models/post');
 const {body, validationResult} = require('express-validator');
+const AWS = require('aws-sdk');
+const fs = require('fs');
+const multiparty = require('multiparty');
+const {v4: uuidv4 } = require('uuid');
+
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+});
 
 exports.get_single = (req, res, next) => {
     Post.findById(req.params.id)
@@ -13,7 +22,7 @@ exports.get_single = (req, res, next) => {
 
 exports.get_latest = (req, res, next) => {
   Post.find({})
-      .sort({date: 1})
+      .sort({date: -1})
       .limit(12)
       .populate('author')
         .populate({path: 'comments.author'})
@@ -22,20 +31,48 @@ exports.get_latest = (req, res, next) => {
       }).catch(err => next(err));
 };
 
-exports.post_new = [
-    body('content', 'Post content is required').trim().isLength({min:1}).escape(),
-    (req, res, next) => {
+exports.post_new = async (req, res, next) => {
+    const form = new multiparty.Form();
+    form.parse(req, async (error, fields, files) => {
+        if (error) return res.status(500).json({ err: error });
+
+        // Validate and sanitize content
+        req.body.content = fields.content[0];
+        await body('content', 'Post content is required').trim().isLength({min:1}).escape().run(req);
         const err = validationResult(req);
         if (!err.isEmpty()) return res.status(409).json({error: err.array()});
 
-        const post = new Post({
-            author: req.user._id,
-            content: req.body.content
-        });
-        post.save(err => err && next(err));
-        res.json(post);
-    }
-];
+        try {
+            let uploadedImagePath = null;
+            if (files.file){
+                const path = files.file[0].path;
+                const blob = fs.readFileSync(path);
+
+                const uploadedImage = await s3.upload({
+                    Bucket: process.env.AWS_BUCKET_NAME,
+                    Key: uuidv4(),
+                    Body: blob,
+                }).promise();
+                uploadedImagePath = uploadedImage.Location;
+            }
+            let postData = {
+                author: req.user._id,
+                content: fields.content[0],
+            };
+            if (uploadedImagePath)
+                postData = { ...postData, picUrl: uploadedImagePath };
+
+            const post = new Post(postData);
+
+            post.save(err => {
+                if (err) return next(err);
+                res.json(post);
+            });
+        } catch (err) {
+            return res.status(500).json({ err });
+        }
+    });
+};
 
 exports.delete = (req, res, next) => {
     Post.findById(req.params.id).then(post => {
