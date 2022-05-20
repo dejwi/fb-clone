@@ -1,9 +1,11 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 const {body, validationResult} = require('express-validator');
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const multiparty = require('multiparty');
 const {v4: uuidv4 } = require('uuid');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -11,7 +13,7 @@ const s3 = new AWS.S3({
 });
 
 exports.get_single = (req, res, next) => {
-    Post.findById(req.params.id)
+    Post.findOne({_id: req.params.id})
         .populate('author')
         .populate({path: 'comments.author'})
         .then(post => {
@@ -75,7 +77,7 @@ exports.post_new = async (req, res, next) => {
 };
 
 exports.delete = (req, res, next) => {
-    Post.findById(req.params.id).then(post => {
+    Post.findOne({_id: req.params.id}).then(post => {
         if (!post) return res.status(404).json({msg: "Not found"});
         if (post.author !== req.user._id) return res.status(401).json({error: "You are not the author of this post"});
 
@@ -97,3 +99,37 @@ exports.post_comment = [
             .catch(err => next(err));
     }
 ];
+
+exports.addLike = (req, res, next) => {
+  Post.findById(req.params.id).then(post => {
+      if (!post) return res.status(404).json({msg: 'Not found'});
+
+      User.updateOne({ _id: req.user._id }, {$addToSet: {liked: req.params.id}}).then(doc => {
+          if (doc.modifiedCount){
+              Post.findByIdAndUpdate(req.params.id, {$inc: { likes: 1 }}).then(doc => {
+                  res.json({msg: 'Done'});
+              }).catch(err => next(err));
+          } else{
+              res.json({ msg: 'Possibly already liked' });}
+      }).catch(err => next(err));
+  });
+};
+
+exports.removeLike = (req, res, next) => {
+    Post.findById(req.params.id).then(post => {
+        if (!post) return res.status(404).json({msg: 'Not found'});
+
+        User.updateOne({ _id: req.user._id },{ $pull: { liked: req.params.id } })
+          .then(doc => {
+            if (doc.modifiedCount){
+                Post.findByIdAndUpdate(req.params.id, {$inc: { likes: -1 }}).then(doc => {
+                    res.json({msg: 'Done'});
+                }).catch(err => next(err));
+            } else{
+                res.json({ msg: 'Possibly already liked' });}
+        }).catch(err => {
+            console.log(err);
+            next(err);
+        });
+    });
+};
