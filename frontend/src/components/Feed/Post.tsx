@@ -33,6 +33,9 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
 
     <p className='mt-1'>{content}</p>
 
+    {/*TODO: styling - it was a fast add*/}
+    {!!picUrl && <img src={picUrl}/>}
+
     <hr className='mt-1.5'/>
     <div className='flex justify-between py-1'>
       <button className={btnClass}><LikeIcon className={iconClass}/> Like</button>
