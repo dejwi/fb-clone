@@ -14,7 +14,7 @@ const animeOpts = {
 const Nav: React.FC = () => {
   const user = useContext(userContext);
 
-  return (<motion.nav className='grid grid-cols-nav bg-white drop-shadow-sm py-1 items-center px-2.5'
+  return (<motion.nav className='sticky top-0 grid grid-cols-nav bg-white drop-shadow-sm py-1 items-center px-2.5'
                       {...animeOpts}>
     <div className='flex'>
       <FbLogo className='w-10 h-10'/>

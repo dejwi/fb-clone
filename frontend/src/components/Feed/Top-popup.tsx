@@ -25,7 +25,7 @@ const Top_popup: React.FC<prop> = ({hide}) => {
     // end
   };
 
-  return (<div onClick={()=>hide()} className='absolute top-0 left-0 bg-neutral-600 bg-opacity-20 h-screen w-screen'>
+  return (<div onClick={()=>hide()} className='fixed top-0 left-0 bg-neutral-600 bg-opacity-20 h-screen w-full'>
       <form onClick={e=>e.stopPropagation()} onSubmit={handleSubmit(onSubmit)} >
 
         <input type='file' {...register('image')} accept="image/*"/>

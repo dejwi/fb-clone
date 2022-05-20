@@ -29,7 +29,7 @@ const Feed: React.FC = () => {
 
   return (<>
     <Nav/>
-    <main className='flex flex-col gap-5 items-center mt-5'>
+    <main className='flex flex-col gap-5 items-center mt-3.5 pb-4'>
       <Top />
       <div className='h-[1px] w-[22.5rem] bg-neutral-200 -mt-2 -mb-2'></div>
 
