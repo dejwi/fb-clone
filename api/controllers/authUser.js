@@ -18,7 +18,7 @@ exports.me_update = [
 ];
 
 exports.sendFriendReq = (req, res, next) => {
-    User.findByIdAndUpdate(req.params.id, { $addToSet: { friendReqReceived: req.user._id } })
+    User.updateOne({_id: req.params.id}, { $addToSet: { friendReqReceived: req.user._id } })
         .then(result => {
             if (!result.matchedCount) return res.status(404).json({ msg: 'User not found'});
 
@@ -28,7 +28,7 @@ exports.sendFriendReq = (req, res, next) => {
 };
 
 exports.acceptFriendReq = (req, res, next) => {
-    User.findByIdAndUpdate(req.user._id, { $pull: { friendReqReceived: req.params.id } } )
+    User.updateOne({_id: req.params.id}, { $pull: { friendReqReceived: req.params.id } } )
         .then(result => {
             if (!result.modifiedCount) return res.status(404).json({ msg: 'Friend request doesnt exist'});
 
