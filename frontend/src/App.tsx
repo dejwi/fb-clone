@@ -30,7 +30,7 @@ const App: React.FC = () => {
     })();
   },[]);
 
-  return (<div className='bg-stone-100 h-screen'>{
+  return (<div className='bg-stone-100 h-full'>{
     isLoading ?
         <div className='h-screen flex justify-center items-center'>
           <DotPulse color={'#181818'}/>
