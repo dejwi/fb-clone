@@ -17,6 +17,7 @@ const CommentNew: React.FC<props> = ({picUrl, refInput, postId, addLocalComment}
 
     const res = await fetchApi(`/post/${postId}/comment`, 'POST', JSON.stringify({content}), true);
     if (res.ok) addLocalComment(content);
+    console.log(await res.json());
     setContent('');
   };
 
