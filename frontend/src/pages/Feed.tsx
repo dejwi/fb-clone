@@ -11,7 +11,6 @@ interface _PostType extends PostType {
 }
 
 const Feed: React.FC = () => {
-  const apiUrl = process.env.REACT_APP_BACKEND as string;
   const [posts, setPosts] = useState<_PostType[] | null>(null);
 
   useEffect(()=>{
