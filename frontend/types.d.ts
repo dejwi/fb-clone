@@ -22,7 +22,7 @@ interface PostType {
 
 type UserContext = {
     user: UserType | undefined,
-    setUser: (updt: UserType) => void
+    setUser: (updt: any) => void
 };
 
 declare module "*.svg" {
