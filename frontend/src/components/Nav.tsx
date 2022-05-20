@@ -6,7 +6,7 @@ import { ReactComponent as HomeIcon} from '../svg/home.svg';
 import { motion, useAnimation } from 'framer-motion'
 
 const Nav: React.FC = () => {
-  const user = useContext(userContext);
+  const {user} = useContext(userContext) as UserContext;
 
   const control = useAnimation();
   const [lastScrollY, setLastScrollY] = useState(0);

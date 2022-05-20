@@ -11,7 +11,7 @@ const animeOpts = {
 };
 
 const Top: React.FC = () => {
-  const user = useContext(userContext);
+  const {user} = useContext(userContext) as UserContext;
   const [showPopup, setShowPopup] = useState(false);
 
   return (<><motion.div className='flex bg-white w-[21.5rem] py-3 rounded-lg justify-center' {...animeOpts}>

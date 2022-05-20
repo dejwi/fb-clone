@@ -20,6 +20,11 @@ interface PostType {
     comments: []
 }
 
+type UserContext = {
+    user: UserType | undefined,
+    setUser: (updt: UserType) => void
+};
+
 declare module "*.svg" {
     import React = require("react");
     const src: React.FC<React.SVGProps<SVGSVGElement>>;
