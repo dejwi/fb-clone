@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import Nav from '../components/Nav'
-import Post from '../components/Post-feed/Post';
-import Post_skeleton from '../components/Post-feed/Post-skeleton'
-import {AnimatePresence} from 'framer-motion'
+import Post from '../components/Feed/Post';
+import Top from '../components/Feed/Top';
+import Post_skeleton from '../components/Feed/Post-skeleton';
+import {AnimatePresence} from 'framer-motion';
 
 interface _PostType extends PostType {
   author: UserType
@@ -29,6 +30,9 @@ const Feed: React.FC = () => {
   return (<>
     <Nav/>
     <main className='flex flex-col gap-5 items-center mt-5'>
+      <Top />
+      <div className='h-[1px] w-[22.5rem] bg-neutral-200 -mt-2 -mb-2'></div>
+
       <AnimatePresence initial={false} exitBeforeEnter={true}  >
       {!posts ?
       <> <Post_skeleton/> <Post_skeleton/> <Post_skeleton/> </>:
