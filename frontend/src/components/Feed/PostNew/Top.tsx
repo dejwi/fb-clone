@@ -7,7 +7,7 @@ import Top_popup from './Top-popup'
 const animeOpts = {
   initial:{ y: -4, opacity: 0},
   animate:{ y: 0, opacity: 1},
-  transition:{ type: 'spring', delay: 0.2, duration: 2}
+  transition:{ type: 'spring', delay: 0.2, duration: 1.2}
 };
 
 const Top: React.FC = () => {
