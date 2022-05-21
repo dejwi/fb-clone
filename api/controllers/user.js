@@ -10,7 +10,11 @@ exports.get_single = (req, res, next) => {
 };
 
 exports.get_posts = (req, res, next) => {
-  Post.find({ author: req.params.id } ).then(posts => {
+  Post.find({ author: req.params.id } )
+    .sort({date: -1})
+    .populate('author')
+    .populate({path: 'comments.author'})
+    .then(posts => {
       res.json(posts);
   });
 };
