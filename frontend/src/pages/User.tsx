@@ -1,23 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import PostTimeline from '../components/Post/Post-timeline'
-import fetchApi from '../helpers/fetchApi'
-import PostSkeletonTimeline from '../components/Skeleton/Post-skeleton-timeline'
-import {motion, AnimatePresence} from 'framer-motion'
-import {useParams} from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import PostTimeline from '../components/Post/Post-timeline';
+import fetchApi from '../helpers/fetchApi';
+import PostSkeletonTimeline from '../components/Skeleton/Post-skeleton-timeline';
+import {motion, AnimatePresence} from 'framer-motion';
+import {useParams} from 'react-router-dom';
+import UserInfo from '../components/UserInfo';
+import UserInfoSkeleton from '../components/Skeleton/UserInfo-skeleton';
 
 interface _PostType extends PostType {
   author: UserType
 }
 
 const User: React.FC = () => {
-  const [posts, setPosts] = useState<_PostType[] | null>(null);
+  const [posts, setPosts] = useState<_PostType[] | null>();
+  const [user, setUser] = useState<UserType>();
   const { id } = useParams();
 
   useEffect(()=>{
     window.scrollTo(0,0);
     (async()=>{
+      const res = await fetchApi(`/user/${id}`);
+      const data = await res.json();
+      setUser(data);
+    })();
+    (async()=>{
       const res = await fetchApi(`/user/${id}/posts`);
-      setPosts(await res.json());
+      const data = await res.json();
+
+      setPosts(data);
     })();
   }, []);
 
@@ -30,15 +40,19 @@ const User: React.FC = () => {
   };
 
   return (<>
-    <motion.div className='flex flex-col items-center mt-3.5' {...exitOpt}>
-
-      {/*<div className='h-[1px] w-[22.5rem] bg-neutral-200 mt-3.5 mb-2.5'></div>*/}
+    <motion.div className='flex flex-col items-center' {...exitOpt}>
       <AnimatePresence exitBeforeEnter>
-        {posts ?
-          <PostTimeline posts={posts} key='feedposts'/>
-          :
-          <PostSkeletonTimeline key='feedskeleton'/>
-        }
+      {user ?
+        <UserInfo user={user} /> :
+        <UserInfoSkeleton />
+      }
+      </AnimatePresence>
+      <div className='h-[1px] w-[22.5rem] bg-neutral-200 mb-5'></div>
+      <AnimatePresence exitBeforeEnter>
+        {!!posts && <PostTimeline posts={posts} key='feedposts'/>}
+        {posts === undefined && <PostSkeletonTimeline key='feedskeleton'/>}
+        {posts === null && <span>No posts:(</span>}
+
       </AnimatePresence>
     </motion.div>
   </>)

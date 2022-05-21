@@ -7,7 +7,8 @@ interface UserType {
     friends: [],
     friendReqSend: [],
     friendReqReceived: [],
-    liked: []
+    liked: [],
+    bgUrl?: string
 }
 
 interface PostType {
