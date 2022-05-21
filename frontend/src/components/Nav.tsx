@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
+import {Link} from 'react-router-dom';
 import {userContext} from '../userContext'
 import { ReactComponent as FbLogo} from '../svg/fblogo.svg';
-import { ReactComponent as SearchIcon} from '../svg/search.svg';
 import { ReactComponent as HomeIcon} from '../svg/home.svg';
 import { motion, useAnimation } from 'framer-motion'
 
@@ -70,9 +70,9 @@ const Nav: React.FC = () => {
 
   return (<motion.nav className={`sticky top-0 grid grid-cols-nav bg-white drop-shadow-sm py-1 items-center px-2.5`}
                       variants={navVariant} initial={'initial'} animate={control}>
-    <div className='flex'>
+    <Link to='/' className=''>
       <FbLogo className='w-10 h-10'/>
-    </div>
+    </Link>
 
     <HomeIcon className='fill-neutral-800 justify-self-center'/>
 
