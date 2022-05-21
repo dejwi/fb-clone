@@ -1,19 +1,11 @@
 import React from 'react';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { motion, AnimatePresence } from 'framer-motion';
-
-const animeOpts = {
-  initial: { y: -20 , opacity: 0},
-  animate: { y: 0, opacity: 1},
-  exit: {y: 30, opacity: 0},
-  transition:{ type: 'spring',  duration: 0.2}
-};
 
 const Post_skeleton: React.FC = () => {
 
   return(
-    <motion.article className='w-[21.5rem] flex flex-col bg-white p-2.5 shadow rounded-md overflow-hidden' {...animeOpts}>
+    <article className='w-[21.5rem] flex flex-col bg-white p-2.5 shadow rounded-md overflow-hidden' >
       <div className='flex items-center -mt-2'>
         <Skeleton circle={true} width={35} height={35}/>
         <div className='flex flex-col ml-1'>
@@ -47,7 +39,7 @@ const Post_skeleton: React.FC = () => {
       <Skeleton height={20} width={290}/>
     </div>
 
-  </motion.article> );
+  </article> );
 };
 
 export default Post_skeleton;

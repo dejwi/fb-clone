@@ -22,12 +22,6 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
   const [likeCount, setLikeCount] = useState(likes);
   const likeControl = useAnimation();
 
-  const animeOpts = {
-    initial:{ y: -4 , opacity: 0},
-    animate:{ y: 0, opacity: 1},
-    transition:{ type: 'spring', duration: 0.6}
-  };
-
   const likeVariants = {
     liked: {
       fill: '#0188e0',
@@ -77,7 +71,7 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
   const iconClass = 'w-4 h-4 mr-0.5 fill-neutral-400 mt-0.5';
   const btnClass = 'flex items-center text-neutral-500 px-4 py-1 transition-[background] hover:bg-neutral-100 -my-0.5 rounded-md text-[0.85rem] ';
 
-  return (<motion.article className='w-[21.5rem] flex flex-col bg-white p-2.5 shadow rounded-md' {...animeOpts}>
+  return (<article className='w-[21.5rem] flex flex-col bg-white p-2.5 shadow rounded-md'>
     <div className='flex items-center'>
       <img alt='avatar' src={author.picUrl} className='h-9 w-9 rounded-full'/>
       <div className='flex flex-col ml-1'>
@@ -120,7 +114,7 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
 
     <CommentNew picUrl={user?.picUrl as string} refInput={input} postId={_id} addLocalComment={addLocalComment}/>
 
-  </motion.article>);
+  </article>);
 };
 
 export default Post;

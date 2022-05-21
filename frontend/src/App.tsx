@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import {userContext} from "./userContext";
 import { DotPulse } from "@uiball/loaders";
-import fetchApi from './helpers/fetchApi'
+import fetchApi from './helpers/fetchApi';
+import { AnimatePresence } from 'framer-motion'
 
+import User from './pages/User';
 import Login from "./pages/Login";
 import Feed from './pages/Feed'
+import Nav from './components/Nav'
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_BACKEND as string;
   const [user, setUser] = useState<UserType>();
   const [isLoading, setLoading] = useState(true);
   const [isAuth, setAuth] = useState(false);
+  const location = useLocation();
 
   useEffect(()=>{
     (async () =>{
@@ -31,15 +35,18 @@ const App: React.FC = () => {
         </div> :
 
         <userContext.Provider value={{ user, setUser: (updt)=>setUser(updt) } }>
-          <BrowserRouter>
-            <Routes>
+            {isAuth && <Nav/>}
+            <AnimatePresence exitBeforeEnter>
+            <Routes key={location.pathname} location={location}>
               {!isAuth ? <Route path='/*' element={<Login/>}/> : <>
 
                 <Route path='/#_=_' element={<Navigate to='/' replace/>}/>
+
                 <Route path='/' element={ <Feed/> }/>
+                <Route path='/user/:id' element={ <User/> }/>
               </>}
             </Routes>
-          </BrowserRouter>
+            </AnimatePresence>
         </userContext.Provider>
   }</div>);
 };
