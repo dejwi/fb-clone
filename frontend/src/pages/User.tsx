@@ -14,6 +14,7 @@ const User: React.FC = () => {
   const { id } = useParams();
 
   useEffect(()=>{
+    window.scrollTo(0,0);
     (async()=>{
       const res = await fetchApi(`/user/${id}/posts`);
       setPosts(await res.json());

@@ -13,6 +13,7 @@ const Feed: React.FC = () => {
   const [posts, setPosts] = useState<_PostType[] | null>(null);
 
   useEffect(()=>{
+    window.scrollTo(0,0);
     (async()=>{
       const res = await fetchApi('/post');
       setPosts(await res.json());
