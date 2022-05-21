@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import fetchApi from '../../../helpers/fetchApi';
+import fetchApi from '../../helpers/fetchApi';
 
 interface props {
   picUrl: string,

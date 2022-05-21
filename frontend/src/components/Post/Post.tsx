@@ -1,19 +1,17 @@
 import React, {useContext, useRef, useState, useEffect } from 'react';
-import niceDate from '../../../helpers/niceDate';
-import { userContext } from '../../../userContext';
+import niceDate from '../../helpers/niceDate';
+import { userContext } from '../../userContext';
 import Comment from './Comment';
 import { Link } from 'react-router-dom';
 import { motion, useAnimation } from 'framer-motion';
 import CommentNew from './CommentNew';
-import FetchApi from '../../../helpers/fetchApi'
+import FetchApi from '../../helpers/fetchApi'
 
-import {ReactComponent as LikeIcon} from '../../../svg/like.svg';
-import {ReactComponent as CommentIcon} from '../../../svg/comment.svg';
-import {ReactComponent as ShareIcon} from '../../../svg/share.svg';
-import LikeBlue from '../../likeBlue';
-import fetchApi from '../../../helpers/fetchApi'
-
-
+import {ReactComponent as LikeIcon} from '../../svg/like.svg';
+import {ReactComponent as CommentIcon} from '../../svg/comment.svg';
+import {ReactComponent as ShareIcon} from '../../svg/share.svg';
+import LikeBlue from '../likeBlue';
+import fetchApi from '../../helpers/fetchApi'
 
 const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, likes, picUrl, comments, _id}) => {
   const {user, setUser} = useContext(userContext) as UserContext;
