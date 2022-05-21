@@ -46,7 +46,7 @@ const Nav: React.FC = () => {
 
   const controlNavbar = () => {
     if (typeof window !== 'undefined') {
-      if (window.scrollY > lastScrollY) { // if scroll down hide the navbar
+      if (window.scrollY > lastScrollY && window.scrollY > 60) { // if scroll down hide the navbar
         setShow(false);
       } else { // if scroll up show the navbar
         setShow(true);
@@ -70,7 +70,7 @@ const Nav: React.FC = () => {
 
   return (<motion.nav className={`sticky top-0 grid grid-cols-nav bg-white drop-shadow-sm py-1 items-center px-2.5 z-50`}
                       variants={navVariant} initial={'initial'} animate={control}>
-    <Link to='/' className=''>
+    <Link to='/' className='max-w-fit' >
       <FbLogo className='w-10 h-10'/>
     </Link>
 
