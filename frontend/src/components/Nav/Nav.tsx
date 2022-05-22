@@ -1,10 +1,11 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import {Link} from 'react-router-dom';
-import {userContext} from '../userContext'
-import { ReactComponent as FbLogo} from '../svg/fblogo.svg';
-import { ReactComponent as HomeIcon} from '../svg/home.svg';
+import {userContext} from '../../userContext'
+import { ReactComponent as FbLogo} from '../../svg/fblogo.svg';
+import { ReactComponent as HomeIcon} from '../../svg/home.svg';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion'
-import DropdownMenu from './DropdownMenu'
+import DropdownMenu from '../DropdownMenu'
+import PageSwitch from './PageSwitch'
 
 const Nav: React.FC = () => {
   const {user} = useContext(userContext) as UserContext;
@@ -77,7 +78,7 @@ const Nav: React.FC = () => {
       <FbLogo className='w-10 h-10'/>
     </Link>
 
-    <HomeIcon className='fill-neutral-800 justify-self-center'/>
+    <PageSwitch/>
 
     <button className='flex items-center justify-self-end' onClick={()=>setShowMenu(!showMenu)}>
       <img alt='avatar' src={user?.picUrl} className='w9 h-9 rounded-full'/>
