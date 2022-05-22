@@ -9,6 +9,9 @@ import User from './pages/User';
 import Login from "./pages/Login";
 import Feed from './pages/Feed'
 import Nav from './components/Nav/Nav'
+import FriendsFeed from './pages/FriendsFeed'
+import Friends from './pages/Friends'
+import FriendsDiscover from './pages/FriendsDiscover'
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_BACKEND as string;
@@ -23,8 +26,15 @@ const App: React.FC = () => {
       setAuth(res.ok);
       setLoading(false);
 
-      if(res.ok)
-        setUser(await res.json());
+      if(res.ok){
+        const data: UserType = await res.json();
+        // store image 'localy' so user doesnt have to redownload it
+        fetch(data.picUrl).then(resp => resp.blob())
+          .then(imgBlob => {
+            data.picUrl = URL.createObjectURL(imgBlob);
+            setUser(data);
+          });
+      }
     })();
   },[]);
 
@@ -44,6 +54,9 @@ const App: React.FC = () => {
 
                 <Route path='/' element={ <Feed/> }/>
                 <Route path='/user/:id' element={ <User/> }/>
+                <Route path='/friends' element={ <Friends/> }/>
+                <Route path='/friendsfeed' element={ <FriendsFeed/> }/>
+                <Route path='/newfriends' element={ <FriendsDiscover/> }/>
               </>}
             </Routes>
             </AnimatePresence>
