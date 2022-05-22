@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import fetchApi from '../../../helpers/fetchApi'
+import ImgIcon from '../../ImgIcon'
+import { userContext } from '../../../userContext'
+import { motion } from 'framer-motion'
 
 interface prop {
   hide: () => void,
@@ -9,6 +12,8 @@ interface prop {
 const Top_popup: React.FC<prop> = ({hide}) => {
   const { register, handleSubmit } = useForm();
   const apiUrl = process.env.REACT_APP_BACKEND as string;
+  const {user} = useContext(userContext) as UserContext;
+  const [fileName, setFileName] = useState('');
 
   const onSubmit = (data: any) => {
     if (!data.content) return;
@@ -21,14 +26,41 @@ const Top_popup: React.FC<prop> = ({hide}) => {
       .then(() => hide());
   };
 
-  return (<div onClick={()=>hide()} className='fixed top-0 left-0 bg-neutral-600 bg-opacity-20 h-screen w-full'>
-      <form onClick={e=>e.stopPropagation()} onSubmit={handleSubmit(onSubmit)} >
+  const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.files)
+      setFileName(e.target.files[0].name);
+  };
 
-        <input type='file' {...register('image')} accept="image/*"/>
-        <textarea {...register('content')}  placeholder={`What's on your mind `} required/>
-        <button type='submit'>Submit</button>
+  return (<motion.div onClick={()=>hide()} className='fixed top-0 left-0 bg-neutral-600 bg-opacity-40 h-screen w-full z-50 flex items-center justify-center'
+                      initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} transition={{duration: 0.25}}>
+
+      <form onClick={e=>e.stopPropagation()} onSubmit={handleSubmit(onSubmit)} className='flex flex-col bg-white shadow-md px-4 rounded-md pb-2 -mt-28'>
+        <div className='flex items-center gap-1.5 py-2.5'>
+          <img alt='avatar' src={user?.picUrl} className='w-12 h-12 min-w-[3rem] rounded-full'/>
+          <div className='relative w-full'>
+            <span className=''>{user?.username}</span>
+            <p className='text-sm text-neutral-500 -mt-1.5'>{new Date().toLocaleDateString("en-gb", {
+              month: "long",
+              day: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+            })}</p>
+
+            <button type='submit' className='font-semibold  text-sky-600 absolute right-2 top-1/4'>Post</button>
+          </div>
+        </div>
+        <hr/>
+        <textarea className='mt-1 w-[19.5rem] min-h-[6rem] focus:outline-0' {...register('content')}  placeholder={`What's on your mind `} required/>
+
+        <div className='flex flex-col w-full items-center'>
+          <label className='flex justify-center'>
+            <input type='file' {...register('image')} accept="image/*" className='hidden' onChange={fileChange}/>
+            <ImgIcon classes='w-9 h-9'/>
+          </label>
+          <span className='text-sm text-zinc-400'>{fileName}</span>
+        </div>
       </form>
-  </div>)
+  </motion.div>)
 };
 
 export default Top_popup;

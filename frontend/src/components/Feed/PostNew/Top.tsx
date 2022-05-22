@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react'
 import { Link } from 'react-router-dom';
 import { userContext } from '../../../userContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Top_popup from './Top-popup'
 
 const animeOpts = {
@@ -22,8 +22,11 @@ const Top: React.FC = () => {
 
 
   </motion.div>
+    <AnimatePresence exitBeforeEnter>
     {showPopup && <Top_popup hide={()=>setShowPopup(false)}/>}
+    </AnimatePresence>
     </>);
+
 };
 
 export default Top;
