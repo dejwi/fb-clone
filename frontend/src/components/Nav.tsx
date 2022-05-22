@@ -83,7 +83,7 @@ const Nav: React.FC = () => {
       <img alt='avatar' src={user?.picUrl} className='w9 h-9 rounded-full'/>
       <span className='ml-1'>{user?.username.split(' ')[0]}</span>
       <AnimatePresence exitBeforeEnter>
-      {showMenu && <DropdownMenu/>}
+      {showMenu && <DropdownMenu userid={user?._id as string}/>}
       </AnimatePresence>
     </button>
   </motion.nav>);
