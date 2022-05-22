@@ -85,9 +85,9 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
     {/*TODO: styling - it was a fast add*/}
     {!!picUrl && <img src={picUrl} className='mb-1' loading='lazy'/>}
 
-    <div className='flex items-center justify-between'>
+    <div className='grid grid-cols-2 items-center w-full'>
       {!!likeCount && <span className='flex items-center gap-0.5 float-left text-sm'><LikeBlue/>{likeCount}</span>}
-      {!!_comments.length && <span className='flex text-neutral-500 text-sm '>{_comments.length} Comments</span>}
+      {!!_comments.length && <span className='flex text-neutral-500 text-sm justify-self-end col-end-3'>{_comments.length} Comments</span>}
     </div>
 
     {/*TODO: MAYBE MOVE THIS TO SEPARATE COMPONENT*/}
