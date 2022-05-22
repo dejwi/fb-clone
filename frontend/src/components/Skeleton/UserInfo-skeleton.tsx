@@ -11,7 +11,7 @@ const UserInfoSkeleton: React.FC = () =>{
     transition:{ type: 'spring', duration: 0.6},
   };
 
-  return (<motion.div className='flex flex-col mb-5 items-center' {...animeOpts}>
+  return (<motion.div className='flex flex-col mb-5 items-center h-[226px]' {...animeOpts}>
     <Skeleton width={'22.5rem'} height={'9rem'} containerClassName={'rounded-b-xl overflow-hidden -mt-1 brightness-95'}/>
     <div className='flex flex-col items-center -mt-[4rem]'>
       <Skeleton circle={true} width={'6rem'} height={'6rem'}/>

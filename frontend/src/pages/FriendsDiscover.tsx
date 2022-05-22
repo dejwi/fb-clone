@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { userContext } from '../userContext'
 import Fcard from '../components/Friends/Fcard'
 import fetchApi from '../helpers/fetchApi'
+import FcardSkeleton from '../components/Skeleton/Fcard-skeleton'
 
 const FriendsDiscover: React.FC = () => {
   const {user, setUser} = useContext(userContext) as UserContext;
@@ -38,19 +39,15 @@ const FriendsDiscover: React.FC = () => {
 
   return (
     <motion.div className='flex flex-col items-center w-screen max-w-full ' {...exitOpt}>
-      {/*skeleton*/}
-
       <div className='flex flex-col gap-2.5 mt-3'>
+        <AnimatePresence exitBeforeEnter>
         {!!found?.length && found.map(e => <Fcard data={e} key={e._id}>
           <button className='-mt-1.5 text-sky-600 text-sm' onClick={()=>invite(e._id)}>Invite</button>
         </Fcard>)}
-        {!found?.length && <span className='text-sm text-neutral-500 mt-2'>No one to show :(</span>}
+        {found === undefined && <><FcardSkeleton/><FcardSkeleton/><FcardSkeleton/></>}
+        {found?.length === 0 && <span className='text-sm text-neutral-500 mt-2'>No one to show :(</span>}
+        </AnimatePresence>
       </div>
-
-      <AnimatePresence exitBeforeEnter>
-
-
-      </AnimatePresence>
     </motion.div>
   )
 };

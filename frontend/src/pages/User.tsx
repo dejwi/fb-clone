@@ -92,9 +92,8 @@ const User: React.FC = () => {
       <div className='h-[1px] w-[22.5rem] bg-neutral-200 mb-5'></div>
       <AnimatePresence exitBeforeEnter>
         {!!posts && <PostTimeline posts={posts} key='feedposts'/>}
-        {posts === undefined && <PostSkeletonTimeline key='feedskeleton'/>}
-        {!posts?.length && <span>No posts :(</span>}
-
+        {posts === undefined && <PostSkeletonTimeline key='feedskeleton' addClass='mt-0'/>}
+        {posts?.length === 0 && <span>No posts :(</span>}
       </AnimatePresence>
     </motion.div>
   </>)
