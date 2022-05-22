@@ -14,8 +14,8 @@ const Login: React.FC = () => {
     return (<motion.main {...animeOpts} className='h-screen flex flex-col justify-center items-center font-["Roboto"] gap-2.5'>
         <FbLogo className='absolute top-2.5'/>
 
-        <a href={`${apiUrl}/auth/facebook`} className='bg-blue-500 w-48 text-center py-2 rounded text-white font-medium'>Sign-in with Facebook</a>
-        <button className='bg-neutral-700 w-48 text-center py-2 rounded text-white font-medium'>Demo account</button>
+        <motion.a whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} href={`${apiUrl}/auth/facebook`} className='bg-blue-500 w-48 text-center py-2 rounded text-white font-medium'>Sign-in with Facebook</motion.a>
+        {/*<button className='bg-neutral-700 w-48 text-center py-2 rounded text-white font-medium'>Demo account</button>*/}
     </motion.main>);
 };
 
