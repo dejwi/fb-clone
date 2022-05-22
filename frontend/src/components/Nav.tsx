@@ -68,7 +68,7 @@ const Nav: React.FC = () => {
     }
   }, [lastScrollY]);
 
-  return (<motion.nav className={`sticky top-0 grid grid-cols-nav bg-white drop-shadow-sm py-1 items-center px-2.5 z-50`}
+  return (<motion.nav className={`sticky top-0 grid grid-cols-nav bg-white drop-shadow-sm py-1 items-center px-2.5 z-40`}
                       variants={navVariant} initial={'initial'} animate={control}>
     <Link to='/' className='max-w-fit' >
       <FbLogo className='w-10 h-10'/>
