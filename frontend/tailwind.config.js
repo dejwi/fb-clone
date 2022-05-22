@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        'nav': '1fr 4rem 1fr',
+        'nav': '1fr 6rem 1fr',
       }
     },
   },
