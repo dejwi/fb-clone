@@ -13,7 +13,6 @@ const PostTimeline: React.FC<props> = ({ posts}) => {
   const animeOpts = {
     initial:{ y: -20 , opacity: 0, transition: {delay: 0.5}},
     animate:{ y: 0, opacity: 1},
-    exit: {y: 30, opacity: 0},
     transition:{ type: 'spring', duration: 0.6},
   };
 
