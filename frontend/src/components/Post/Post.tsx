@@ -73,7 +73,7 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
 
   return (<article className='w-[21.5rem] flex flex-col bg-white p-2.5 shadow rounded-md'>
     <div className='flex items-center'>
-      <img alt='avatar' src={author.picUrl} className='h-9 w-9 rounded-full' loading='lazy'/>
+      <Link to={`/user/${author._id}`}><img alt='avatar' src={author.picUrl} className='h-9 w-9 rounded-full' loading='lazy'/></Link>
       <div className='flex flex-col ml-1'>
         <Link to={`/user/${author._id}`} className='-mb-1.5 font-semibold'>{author.username}</Link>
         <span className='text-neutral-500 text-sm'>{niceDate(date)}</span>
