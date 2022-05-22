@@ -65,7 +65,18 @@ exports.friendninviteDetail = async (req, res ,next) => {
 };
 
 exports.discoverNewFriends = (req, res, next) => {
-  User.find({_id: {$nin: [req.user._id, req.user.friends, req.user.friendReqReceived, req.user.friendReqSend]}})
+  User.find({_id: {$nin: [req.user._id, req.user.friends, req.user.friendReqReceived, req.user.friendReqSend] }})
     .then(result => res.json(result))
     .catch(err => next(err));
+};
+
+exports.removeFriend = (req, res, next) => {
+  User.updateOne({_id: req.params.id}, {$pull: {friends: req.user._id}})
+    .then(doc => {
+      if (!doc.modifiedCount) return res.status(409).json({msg: 'You are not his friend'});
+
+      User.findByIdAndUpdate(req.user._id, {$pull: { friends: req.params.id}})
+        .then(()=>res.json({msg: 'Done'}))
+        .catch(err => next(err));
+    }).catch(err => next(err));
 };

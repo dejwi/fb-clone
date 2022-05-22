@@ -31,12 +31,24 @@ const Friends: React.FC = () => {
   const acceptInvite = async (id: string) => {
     fetchApi(`/auth/acceptFriend/${id}`, 'POST');
 
-    setInvites(invites?.filter(e => e._id !== id));
+    const filt = invites?.filter(e => e._id !== id)
+    setInvites(filt);
 
     // update local context
     const newUser = {...user} as UserType;
     newUser.friends.push(id as never);
-    newUser.friendReqReceived = invites?.filter(e => e._id !== id) as [];
+    newUser.friendReqReceived = filt as [];
+    setUser(newUser);
+  };
+  const removeFriend = async (id: string) => {
+    fetchApi(`/auth/removeFriend/${id}`, 'DELETE');
+
+    const filt = friends?.filter(e => e._id !== id);
+    setFriends(filt);
+
+    // update local context
+    const newUser = {...user} as UserType;
+    newUser.friends = filt as [];
     setUser(newUser);
   };
 
@@ -59,7 +71,9 @@ const Friends: React.FC = () => {
       <div className='h-[1px] w-[22.5rem] bg-neutral-200 mb-5 mt-3.5'></div>
 
       <div className='flex flex-col gap-2.5'>
-      {!!friends?.length && friends.map(e => <Fcard data={e} key={e._id}/>)}
+        {!!friends?.length && friends.map(e => <Fcard data={e} key={e._id}>
+          <button className='-mt-1.5 text-rose-700 text-sm' onClick={()=>removeFriend(e._id)}>Remove</button>
+        </Fcard>)}
       {!friends?.length && <span className='text-sm text-neutral-500 -mt-2'>0 friends</span>}
       </div>
 

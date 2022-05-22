@@ -19,6 +19,7 @@ router.put('/info', checkAuth, authUserController.me_update);
 
 router.post('/addFriend/:id', checkAuth, authUserController.sendFriendReq);
 router.post('/acceptFriend/:id', checkAuth, authUserController.acceptFriendReq);
+router.delete('/removeFriend/:id', checkAuth, authUserController.removeFriend);
 
 router.get('/friendsfeed', checkAuth, authUserController.friendsfeed);
 router.get('/fdetail', checkAuth, authUserController.friendninviteDetail);
