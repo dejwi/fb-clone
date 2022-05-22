@@ -29,13 +29,13 @@ exports.sendFriendReq = (req, res, next) => {
 };
 
 exports.acceptFriendReq = (req, res, next) => {
-    User.updateOne({_id: req.params.id}, { $pull: { friendReqReceived: req.params.id } } )
+    User.updateOne({_id: req.params.id}, { $pull: { friendReqSend: req.user._id } } )
         .then(result => {
             if (!result.modifiedCount) return res.status(404).json({ msg: 'Friend request doesnt exist'});
 
             Promise.all([
-                User.findByIdAndUpdate(req.user._id, { $addToSet: { friends: req.params.id } } ),
-                User.findByIdAndUpdate(req.params.id, { $addToSet: { friends: req.user._id }, $pull: { friendReqSend: req.user._id }} )
+                User.findByIdAndUpdate(req.user._id, { $addToSet: { friends: req.params.id }, $pull: { friendReqReceived: req.params.id } } ),
+                User.findByIdAndUpdate(req.params.id, { $addToSet: { friends: req.user._id }} )
             ]).then(result => res.json({ msg: 'Accepted' }))
                 .catch(err => next(err));
         }).catch(err => next(err));
