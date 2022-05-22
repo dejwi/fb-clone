@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 import {userContext} from '../userContext'
 import { ReactComponent as FbLogo} from '../svg/fblogo.svg';
 import { ReactComponent as HomeIcon} from '../svg/home.svg';
-import { motion, useAnimation } from 'framer-motion'
+import { motion, useAnimation, AnimatePresence } from 'framer-motion'
+import DropdownMenu from './DropdownMenu'
 
 const Nav: React.FC = () => {
   const {user} = useContext(userContext) as UserContext;
@@ -11,6 +12,7 @@ const Nav: React.FC = () => {
   const control = useAnimation();
   const [lastScrollY, setLastScrollY] = useState(0);
   const [show, setShow] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
 
   const navVariant = {
     initial: {
@@ -48,6 +50,7 @@ const Nav: React.FC = () => {
     if (typeof window !== 'undefined') {
       if (window.scrollY > lastScrollY && window.scrollY > 60) { // if scroll down hide the navbar
         setShow(false);
+        setShowMenu(false);
       } else { // if scroll up show the navbar
         setShow(true);
       }
@@ -76,10 +79,13 @@ const Nav: React.FC = () => {
 
     <HomeIcon className='fill-neutral-800 justify-self-center'/>
 
-    <div className='flex items-center justify-self-end'>
+    <button className='flex items-center justify-self-end' onClick={()=>setShowMenu(!showMenu)}>
       <img alt='avatar' src={user?.picUrl} className='w9 h-9 rounded-full'/>
       <span className='ml-1'>{user?.username.split(' ')[0]}</span>
-    </div>
+      <AnimatePresence exitBeforeEnter>
+      {showMenu && <DropdownMenu/>}
+      </AnimatePresence>
+    </button>
   </motion.nav>);
 };
 
