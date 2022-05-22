@@ -11,7 +11,15 @@
     }
 }
 
-.imgIcon{
-    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/y8/r/Z-P1nG8XiGG.png); background-position: 0px -183px; background-size: auto; background-repeat: no-repeat; display: inline-block;
-    height: 24px; width: 24px;
+
+
+@layer utilities {
+    .imgIcon{
+        background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/y8/r/Z-P1nG8XiGG.png); background-position: 0px -183px; background-size: auto; background-repeat: no-repeat; display: inline-block;
+        height: 24px; width: 24px;
+    }
+    ::-webkit-scrollbar {
+        width: 0;  /* Remove scrollbar space */
+        background: transparent;  /* Optional: just make scrollbar invisible */
+    }
 }
