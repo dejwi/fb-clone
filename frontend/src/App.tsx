@@ -12,6 +12,7 @@ import Nav from './components/Nav/Nav'
 import FriendsFeed from './pages/FriendsFeed'
 import Friends from './pages/Friends'
 import FriendsDiscover from './pages/FriendsDiscover'
+import Logout from './pages/Logout'
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_BACKEND as string;
@@ -57,6 +58,7 @@ const App: React.FC = () => {
                 <Route path='/friends' element={ <Friends/> }/>
                 <Route path='/friendsfeed' element={ <FriendsFeed/> }/>
                 <Route path='/newfriends' element={ <FriendsDiscover/> }/>
+                <Route path='/logout' element={ <Logout changeAuth={()=>setAuth(false)}/> }/>
               </>}
             </Routes>
             </AnimatePresence>
