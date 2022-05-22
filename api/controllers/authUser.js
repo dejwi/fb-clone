@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Post = require("../models/post");
 const {body} = require("express-validator");
 
 exports.me =  (req, res, next) => {
@@ -43,4 +44,28 @@ exports.acceptFriendReq = (req, res, next) => {
 exports.logout = (req, res) => {
   req.logout();
   res.json({msg: 'Logged out'});
+};
+
+exports.friendsfeed = (req, res, next) => {
+  Post.find( {author: {$in: [req.user.friends]}})
+    .populate('author')
+    .populate({path: 'comments.author'})
+    .sort({date: -1})
+    .then(result => {
+    res.json(result);
+  }).catch(err => next(err));
+};
+
+exports.friendninviteDetail = async (req, res ,next) => {
+  User.findById(req.user._id, {friends: 1, friendReqReceived: 1})
+    .populate('friends').populate('friendReqReceived')
+    .then(result => {
+      res.json({friends: result.friends, invites: result.friendReqReceived});
+    }).catch(err => next(err));
+};
+
+exports.discoverNewFriends = (req, res, next) => {
+  User.find({_id: {$nin: [req.user._id, req.user.friends, req.user.friendReqReceived, req.user.friendReqSend]}})
+    .then(result => res.json(result))
+    .catch(err => next(err));
 };
