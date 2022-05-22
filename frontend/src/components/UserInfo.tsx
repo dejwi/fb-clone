@@ -14,7 +14,7 @@ const UserInfo: React.FC<props> = ({user}) =>{
   };
 
   return (<motion.div className='flex flex-col mb-5 items-center' {...animeOpts}>
-    <div className='w-[22.5rem] h-36 bg-gray-300 rounded-b-xl overflow-hidden'>
+    <div className='w-[22.5rem] h-36 bg-gray-200 rounded-b-xl overflow-hidden'>
       {!!user.bgUrl && <img src={user.bgUrl} alt='background' className='object-contain w-full'/>}
     </div>
     <div className='flex flex-col items-center -mt-[4rem]'>

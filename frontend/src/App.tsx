@@ -8,7 +8,7 @@ import { AnimatePresence } from 'framer-motion'
 import User from './pages/User';
 import Login from "./pages/Login";
 import Feed from './pages/Feed'
-import Nav from './components/Nav'
+import Nav from './components/Nav/Nav'
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_BACKEND as string;
@@ -28,7 +28,7 @@ const App: React.FC = () => {
     })();
   },[]);
 
-  return (<div className='bg-stone-100 h-full'>{
+  return (<div className='bg-stone-100 min-h-screen'>{
     isLoading ?
         <div className='h-screen flex justify-center items-center'>
           <DotPulse color={'#181818'}/>

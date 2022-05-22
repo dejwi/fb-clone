@@ -12,7 +12,7 @@ interface _PostType extends PostType {
 }
 
 const User: React.FC = () => {
-  const [posts, setPosts] = useState<_PostType[] | null>();
+  const [posts, setPosts] = useState<_PostType[]>();
   const [user, setUser] = useState<UserType>();
   const { id } = useParams();
 
@@ -25,9 +25,7 @@ const User: React.FC = () => {
     })();
     (async()=>{
       const res = await fetchApi(`/user/${id}/posts`);
-      const data = await res.json();
-
-      setPosts(data);
+      setPosts(await res.json());
     })();
   }, []);
 
@@ -40,7 +38,7 @@ const User: React.FC = () => {
   };
 
   return (<>
-    <motion.div className='flex flex-col items-center' {...exitOpt}>
+    <motion.div className='flex flex-col items-center w-screen max-w-full' {...exitOpt}>
       <AnimatePresence exitBeforeEnter>
       {user ?
         <UserInfo user={user} /> :
@@ -51,7 +49,7 @@ const User: React.FC = () => {
       <AnimatePresence exitBeforeEnter>
         {!!posts && <PostTimeline posts={posts} key='feedposts'/>}
         {posts === undefined && <PostSkeletonTimeline key='feedskeleton'/>}
-        {posts === null && <span>No posts:(</span>}
+        {!posts?.length && <span>No posts :(</span>}
 
       </AnimatePresence>
     </motion.div>

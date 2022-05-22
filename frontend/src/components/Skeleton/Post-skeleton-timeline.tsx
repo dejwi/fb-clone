@@ -11,7 +11,6 @@ const PostSkeletonTimeline: React.FC = () => {
   };
 
   return (<motion.main className='flex flex-col gap-5 items-center mt-3.5 pb-4' {...animeOpts}>
-    <div className='h-[1px] w-[22.5rem] bg-neutral-200 -mt-2 -mb-2'></div>
       <Post_skeleton/> <Post_skeleton/> <Post_skeleton/>
   </motion.main>);
 };
