@@ -50,7 +50,7 @@ const Top_popup: React.FC<prop> = ({hide}) => {
           </div>
         </div>
         <hr/>
-        <textarea className='mt-1 w-[19.5rem] min-h-[6rem] focus:outline-0' {...register('content')}  placeholder={`What's on your mind `} required/>
+        <textarea className='mt-1 w-[19.5rem] min-h-[6rem] focus:outline-0' {...register('content')} placeholder={`What's on your mind, ${user?.username.split(' ')[0]}?`} required/>
 
         <div className='flex flex-col w-full items-center'>
           <label className='flex justify-center'>
