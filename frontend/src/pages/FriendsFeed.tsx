@@ -16,9 +16,7 @@ const FriendsFeed: React.FC = () => {
     window.scrollTo(0,0);
     (async()=>{
       const res = await fetchApi(`/auth/friendsfeed`);
-      const data = await res.json();
-      console.log(data);
-      setPosts(data);
+      setPosts(await res.json());
     })();
   }, []);
 
