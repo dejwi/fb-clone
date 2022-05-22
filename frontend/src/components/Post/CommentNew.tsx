@@ -22,7 +22,7 @@ const CommentNew: React.FC<props> = ({picUrl, refInput, postId, addLocalComment}
   };
 
   return (<form className='flex items-center mt-2' onSubmit={submit}>
-    <img alt='avatar' src={picUrl} className='w-6 h-6 rounded-full'/>
+    <img alt='avatar' src={picUrl} className='w-6 h-6 rounded-full' loading='lazy'/>
     <input ref={refInput} type='text' value={content} onChange={e=>setContent(e.target.value)} placeholder='Write a comment...' className='bg-zinc-100 placeholder:text-neutral-500 py-0.5 pl-2.5 ml-2 rounded-xl flex-1 focus:outline-0'/>
   </form>);
 };
