@@ -29,5 +29,8 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((obj, done) => {
-   done(null, obj);
+   User.findOne({ _id: obj._id }).then(result => {
+     if (!result) return done(null, false);
+     done(null, result);
+   }).catch(err => done(err));
 });
