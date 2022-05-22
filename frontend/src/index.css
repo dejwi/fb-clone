@@ -10,3 +10,8 @@
         -webkit-tap-highlight-color: transparent;
     }
 }
+
+.imgIcon{
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/y8/r/Z-P1nG8XiGG.png); background-position: 0px -183px; background-size: auto; background-repeat: no-repeat; display: inline-block;
+    height: 24px; width: 24px;
+}
