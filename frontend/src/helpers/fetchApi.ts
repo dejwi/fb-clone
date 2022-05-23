@@ -9,8 +9,8 @@ const fetchApi: params = (url, method = 'GET', body, isJson) => {
   const apiUrl = process.env.REACT_APP_BACKEND;
   return fetch(`${apiUrl}${url}`, {
     method,
-    ...(!!token) && { Authorization: `Bearer ${token}` },
     headers: {
+      Authorization: `Bearer ${token}`,
       'Accept': '*/*',
       ...(isJson) && { 'Content-Type': 'application/json'}
     },
