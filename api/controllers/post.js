@@ -25,7 +25,7 @@ exports.get_single = (req, res, next) => {
 exports.get_latest = (req, res, next) => {
     Post.find({})
         .sort({date: -1})
-        .limit(12)
+        .limit(25)
         .populate('author')
         .populate({path: 'comments.author'})
         .then(posts => {
