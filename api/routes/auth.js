@@ -5,26 +5,31 @@ const checkAuth = require('../middleware/checkAuth');
 
 const authUserController = require('../controllers/authUser');
 
+const auth = passport.authenticate('jwt', { session: false });
+
 router.get('/facebook', passport.authenticate('facebook'));
 
 router.get('/facebook/callback',
     passport.authenticate('facebook', {
-        failureRedirect: '/auth/facebook',
-        successRedirect: process.env.FRONTEND_URL
-    })
+        session: false,
+        failureRedirect: '/auth/facebook'
+    }), (req, res) => {
+        const token = req.user.token;
+        res.redirect(`${process.env.FRONTEND_URL}/auth/${token}`);
+    }
 );
 
-router.get('/info', checkAuth, authUserController.me);
-router.put('/info', checkAuth, authUserController.me_update);
+router.get('/info', auth , authUserController.me);
+router.put('/info', auth, authUserController.me_update);
 
-router.post('/addFriend/:id', checkAuth, authUserController.sendFriendReq);
-router.post('/acceptFriend/:id', checkAuth, authUserController.acceptFriendReq);
-router.delete('/removeFriend/:id', checkAuth, authUserController.removeFriend);
+router.post('/addFriend/:id', auth, authUserController.sendFriendReq);
+router.post('/acceptFriend/:id', auth, authUserController.acceptFriendReq);
+router.delete('/removeFriend/:id', auth, authUserController.removeFriend);
 
-router.get('/friendsfeed', checkAuth, authUserController.friendsfeed);
-router.get('/fdetail', checkAuth, authUserController.friendninviteDetail);
-router.get('/discovernew', checkAuth, authUserController.discoverNewFriends);
+router.get('/friendsfeed', auth, authUserController.friendsfeed);
+router.get('/fdetail', auth, authUserController.friendninviteDetail);
+router.get('/discovernew', auth, authUserController.discoverNewFriends);
 
-router.get('/logout', checkAuth, authUserController.logout);
+router.get('/logout', auth, authUserController.logout);
 
 module.exports = router;

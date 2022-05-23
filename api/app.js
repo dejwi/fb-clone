@@ -14,7 +14,6 @@ const app = express();
 app.use(helmet());
 app.use(cors({
   origin: (origin, cb) => cb(null, origin),
-  credentials: true
 }));
 
 app.use(logger('dev'));
@@ -23,19 +22,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-  resave: false,
-  saveUninitialized: true,
-  secret: process.env.SECRET
-}));
 
 // Init mongodb
 require('./config/mongodb');
 
 // Init passport
 require('./config/passport');
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 // Routes
