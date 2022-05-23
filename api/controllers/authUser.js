@@ -46,7 +46,7 @@ exports.logout = (req, res) => {
 };
 
 exports.friendsfeed = (req, res, next) => {
-    Post.find( {author: {$in: [req.user.friends]}})
+    Post.find( {author: {$in: req.user.friends}})
         .populate('author')
         .populate({path: 'comments.author'})
         .sort({date: -1})
@@ -64,7 +64,8 @@ exports.friendninviteDetail = async (req, res ,next) => {
 };
 
 exports.discoverNewFriends = (req, res, next) => {
-    User.find({_id: {$nin: [req.user._id, req.user.friends, req.user.friendReqReceived, req.user.friendReqSend] }})
+    console.log(req.user);
+    User.find({_id: {$nin: [req.user._id, ...req.user.friends, ...req.user.friendReqReceived, ...req.user.friendReqSend] }})
         .then(result => res.json(result))
         .catch(err => next(err));
 };
