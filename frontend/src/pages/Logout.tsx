@@ -7,6 +7,7 @@ const Logout: React.FC<{ changeAuth: () => void }> = ({changeAuth}) => {
   useEffect(()=> {
     fetchApi('/auth/logout').then(()=> {
       changeAuth();
+      window.localStorage.setItem('token','');
       nav('/');
     });
   }, []);
