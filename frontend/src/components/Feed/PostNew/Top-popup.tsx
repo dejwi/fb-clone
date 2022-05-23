@@ -14,6 +14,7 @@ const Top_popup: React.FC<prop> = ({hide}) => {
   const apiUrl = process.env.REACT_APP_BACKEND as string;
   const {user} = useContext(userContext) as UserContext;
   const [fileName, setFileName] = useState('');
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const onSubmit = (data: any) => {
     if (!data.content) return;
@@ -22,6 +23,7 @@ const Top_popup: React.FC<prop> = ({hide}) => {
     formData.append('content', data.content);
     formData.append('file', data.image[0]);
 
+    setBtnDisabled(true);
     fetchApi('/post', 'POST', formData)
       .then(() => hide());
   };
@@ -46,7 +48,7 @@ const Top_popup: React.FC<prop> = ({hide}) => {
               minute: "2-digit",
             })}</p>
 
-            <button type='submit' className='font-semibold  text-sky-600 absolute right-2 top-1/4'>Post</button>
+            <button type='submit' disabled={btnDisabled} className='font-semibold text-sky-600 disabled:text-neutral-500 transition-colors absolute right-2 top-1/4'>Post</button>
           </div>
         </div>
         <hr/>
@@ -54,7 +56,7 @@ const Top_popup: React.FC<prop> = ({hide}) => {
 
         <div className='flex flex-col w-full items-center'>
           <label className='flex justify-center'>
-            <input type='file' {...register('image')} accept="image/*" className='hidden' onChange={fileChange}/>
+            <input type='file' {...register('image')} accept="image/*" className='hidden' onInput={fileChange}/>
             <ImgIcon classes='w-9 h-9'/>
           </label>
           <span className='text-sm text-zinc-400'>{fileName}</span>
