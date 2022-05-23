@@ -50,7 +50,10 @@ const App: React.FC = () => {
             {isAuth && <Nav/>}
             <AnimatePresence exitBeforeEnter>
             <Routes key={location.pathname} location={location}>
-              {!isAuth ? <Route path='/*' element={<Login/>}/> : <>
+              {!isAuth ?<>
+                <Route path='/auth/:token' element={ <Auth/> }/>
+                <Route path='/*' element={<Login/>}/>
+              </>: <>
 
                 <Route path='/#_=_' element={<Navigate to='/' replace/>}/>
 
@@ -60,7 +63,7 @@ const App: React.FC = () => {
                 <Route path='/friendsfeed' element={ <FriendsFeed/> }/>
                 <Route path='/newfriends' element={ <FriendsDiscover/> }/>
                 <Route path='/logout' element={ <Logout changeAuth={()=>setAuth(false)}/> }/>
-                <Route path='/auth/:token' element={ <Auth/> }/>
+
               </>}
             </Routes>
             </AnimatePresence>
