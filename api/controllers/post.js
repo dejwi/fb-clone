@@ -23,14 +23,14 @@ exports.get_single = (req, res, next) => {
 };
 
 exports.get_latest = (req, res, next) => {
-  Post.find({})
-      .sort({date: -1})
-      .limit(12)
-      .populate('author')
+    Post.find({})
+        .sort({date: -1})
+        .limit(12)
+        .populate('author')
         .populate({path: 'comments.author'})
-      .then(posts => {
-          res.json(posts);
-      }).catch(err => next(err));
+        .then(posts => {
+            res.json(posts);
+        }).catch(err => next(err));
 };
 
 exports.post_new = async (req, res, next) => {
@@ -101,18 +101,18 @@ exports.post_comment = [
 ];
 
 exports.addLike = (req, res, next) => {
-  Post.findById(req.params.id).then(post => {
-      if (!post) return res.status(404).json({msg: 'Not found'});
+    Post.findById(req.params.id).then(post => {
+        if (!post) return res.status(404).json({msg: 'Not found'});
 
-      User.updateOne({ _id: req.user._id }, {$addToSet: {liked: req.params.id}}).then(doc => {
-          if (doc.modifiedCount){
-              Post.findByIdAndUpdate(req.params.id, {$inc: { likes: 1 }}).then(doc => {
-                  res.json({msg: 'Done'});
-              }).catch(err => next(err));
-          } else{
-              res.json({ msg: 'Possibly already liked' });}
-      }).catch(err => next(err));
-  });
+        User.updateOne({ _id: req.user._id }, {$addToSet: {liked: req.params.id}}).then(doc => {
+            if (doc.modifiedCount){
+                Post.findByIdAndUpdate(req.params.id, {$inc: { likes: 1 }}).then(doc => {
+                    res.json({msg: 'Done'});
+                }).catch(err => next(err));
+            } else{
+                res.json({ msg: 'Possibly already liked' });}
+        }).catch(err => next(err));
+    });
 };
 
 exports.removeLike = (req, res, next) => {
@@ -120,14 +120,14 @@ exports.removeLike = (req, res, next) => {
         if (!post) return res.status(404).json({msg: 'Not found'});
 
         User.updateOne({ _id: req.user._id },{ $pull: { liked: req.params.id } })
-          .then(doc => {
-            if (doc.modifiedCount){
-                Post.findByIdAndUpdate(req.params.id, {$inc: { likes: -1 }}).then(doc => {
-                    res.json({msg: 'Done'});
-                }).catch(err => next(err));
-            } else{
-                res.json({ msg: 'Possibly already liked' });}
-        }).catch(err => {
+            .then(doc => {
+                if (doc.modifiedCount){
+                    Post.findByIdAndUpdate(req.params.id, {$inc: { likes: -1 }}).then(doc => {
+                        res.json({msg: 'Done'});
+                    }).catch(err => next(err));
+                } else{
+                    res.json({ msg: 'Possibly already liked' });}
+            }).catch(err => {
             console.log(err);
             next(err);
         });
