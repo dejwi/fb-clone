@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     username: { type: String, required: true },
-    facebook_id: { type: String, required: true },
+    facebook_id: { type: String },
+    google_id: { type: String },
     picUrl: { type: String, required: true },
     bgUrl: {type: String},
     friends: [ { type: Schema.Types.ObjectId, ref: 'User' } ],

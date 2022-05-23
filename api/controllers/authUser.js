@@ -3,8 +3,7 @@ const Post = require("../models/post");
 const {body} = require("express-validator");
 
 exports.me =  (req, res, next) => {
-    const facebook_id = req.user.facebook_id;
-    User.findOne({ facebook_id })
+    User.findById(req.user._id)
         //.populate('User') TODO: FIX
         .then( user => res.json(user));
 };

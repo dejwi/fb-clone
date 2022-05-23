@@ -1,5 +1,6 @@
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
+const GoogleStrategy = require('passport-google-oauth20');
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const jwt = require('jsonwebtoken');
@@ -10,15 +11,16 @@ const User = require('../models/user');
 passport.use(new FacebookStrategy({
         clientID: process.env.FB_ID,
         clientSecret: process.env.FB_SECRET,
-        callbackURL: 'https://apifakebookdejwi.herokuapp.com/auth/facebook/callback',
+        callbackURL: '/auth/facebook/callback',
         profileFields: ['id', 'displayName', 'picture.type(large)']
     },
     (accessToken, refreshToken, profile, done) => {
         User.findOne( { facebook_id: profile.id} ).then( user => {
             if (user) {
-                return done(null, { ...user, token: jwt.sign({ user }, process.env.SECRET, {
+                const token = jwt.sign({ _id: user._id }, process.env.SECRET, {
                         expiresIn: '1d',
-                    })});
+                    });
+                return done(null, {...user, token});
             }
 
             const newUser = new User({
@@ -27,8 +29,38 @@ passport.use(new FacebookStrategy({
                 picUrl: profile.photos[0].value
             });
             newUser.save( err => {
-                newUser.token = jwt.sign({ user }, process.env.SECRET, {
+                newUser.token = jwt.sign({ _id: newUser._id  }, process.env.SECRET, {
                     expiresIn: '1d',
+                });
+                done(err, newUser);
+            } );
+        }).catch(err => done(err));
+    }
+));
+
+passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_ID,
+        clientSecret: process.env.GOOGLE_SECRET,
+        callbackURL: '/auth/google/callback',
+        scope: [ 'profile' ],
+    },
+    (accessToken, refreshToken, profile, done) => {
+        User.findOne( { google_id: profile.id} ).then( user => {
+            if (user) {
+                const token = jwt.sign({ _id: user._id }, process.env.SECRET, {
+                        expiresIn: '3d',
+                    });
+                return done(null, {...user, token});
+            }
+
+            const newUser = new User({
+                username: profile.displayName,
+                google_id: profile.id,
+                picUrl: profile.photos[0].value,
+            });
+            newUser.save( err => {
+                newUser.token = jwt.sign({ _id: newUser._id }, process.env.SECRET, {
+                    expiresIn: '3d',
                 });
                 done(err, newUser);
             } );
@@ -44,7 +76,7 @@ passport.use(
         },
         (token, done) => {
             try {
-                User.findOne({_id: token.user._id})
+                User.findOne({_id: token._id})
                     .then(user => done(null, user))
                     .catch(err => done(err));
             } catch (error) {

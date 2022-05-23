@@ -24,6 +24,7 @@
     "multiparty": "^4.2.3",
     "passport": "^0.5.3",
     "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "uuid": "^8.3.2"
   }

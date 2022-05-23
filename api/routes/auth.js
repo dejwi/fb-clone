@@ -7,12 +7,23 @@ const authUserController = require('../controllers/authUser');
 
 const auth = passport.authenticate('jwt', { session: false });
 
-router.get('/facebook', passport.authenticate('facebook'));
-
+router.get('/facebook', passport.authenticate('facebook', {session: false}));
 router.get('/facebook/callback',
     passport.authenticate('facebook', {
         session: false,
         failureRedirect: '/auth/facebook'
+    }), (req, res) => {
+        const token = req.user.token;
+        res.redirect(`${process.env.FRONTEND_URL}/auth/${token}`);
+    }
+);
+
+router.get('/google', passport.authenticate('google', {session: false}));
+router.get('/google/callback',
+    passport.authenticate('google', {
+        session: false,
+        failureMessage: true,
+        failureRedirect: '/auth/google',
     }), (req, res) => {
         const token = req.user.token;
         res.redirect(`${process.env.FRONTEND_URL}/auth/${token}`);
