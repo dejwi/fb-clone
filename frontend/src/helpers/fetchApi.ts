@@ -5,10 +5,11 @@ type params = (url: string,
 ) => Promise<Response>;
 
 const fetchApi: params = (url, method = 'GET', body, isJson) => {
+  const token = window.localStorage.getItem('token');
   const apiUrl = process.env.REACT_APP_BACKEND;
   return fetch(`${apiUrl}${url}`, {
     method,
-    credentials: 'include',
+    ...(!!token) && { Authorization: `Bearer ${token}` },
     headers: {
       'Accept': '*/*',
       ...(isJson) && { 'Content-Type': 'application/json'}
