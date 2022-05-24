@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "watch": "nodemon ./bin/www",
-    "watchdebug": "SET DEBUG=api:* & npm run watch"
+    "watchdebug": "SET DEBUG=api:* & npm run watch",
+    "production": "cd .. && git subtree push --prefix api heroku master"
   },
   "dependencies": {
     "aws-sdk": "^2.1138.0",
