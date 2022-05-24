@@ -18,7 +18,7 @@ router.get('/facebook/callback',
     }
 );
 
-router.get('/google', passport.authenticate('google', {session: false}));
+router.get('/google', passport.authenticate('google', {session: false, prompt: 'select_account'}));
 router.get('/google/callback',
     passport.authenticate('google', {
         session: false,
