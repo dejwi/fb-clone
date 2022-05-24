@@ -7,15 +7,18 @@ type params = (url: string,
 const fetchApi: params = (url, method = 'GET', body, isJson) => {
   const token = window.localStorage.getItem('token');
   const apiUrl = process.env.REACT_APP_BACKEND;
-  return fetch(`${apiUrl}${url}`, {
+  const params: any = {
     method,
     headers: {
       Authorization: `Bearer ${token}`,
       'Accept': '*/*',
-      ...(isJson) && { 'Content-Type': 'application/json'}
     },
-    ...(!!body) && { body }
-  });
+  };
+  if (isJson)
+    params.headers['Content-Type'] = 'application/json';
+  if(body)
+    params.body = body;
+  return fetch(`${apiUrl}${url}`, params);
 };
 
 export default fetchApi;
