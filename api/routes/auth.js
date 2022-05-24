@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 require('dotenv').config();
-const checkAuth = require('../middleware/checkAuth');
+const validateId = require('../middleware/validateId');
 
 const authUserController = require('../controllers/authUser');
 
@@ -31,11 +31,14 @@ router.get('/google/callback',
 );
 
 router.get('/info', auth , authUserController.me);
-router.put('/info', auth, authUserController.me_update);
 
-router.post('/addFriend/:id', auth, authUserController.sendFriendReq);
-router.post('/acceptFriend/:id', auth, authUserController.acceptFriendReq);
-router.delete('/removeFriend/:id', auth, authUserController.removeFriend);
+router.put('/username', auth, authUserController.me_update_username);
+router.put('/prof', auth, authUserController.me_update_prof);
+router.put('/bg', auth, authUserController.me_update_bg);
+
+router.post('/addFriend/:id', auth, validateId, authUserController.sendFriendReq);
+router.post('/acceptFriend/:id', auth, validateId, authUserController.acceptFriendReq);
+router.delete('/removeFriend/:id', auth, validateId, authUserController.removeFriend);
 
 router.get('/friendsfeed', auth, authUserController.friendsfeed);
 router.get('/fdetail', auth, authUserController.friendninviteDetail);

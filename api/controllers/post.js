@@ -5,7 +5,7 @@ const AWS = require('aws-sdk');
 const fs = require('fs');
 const multiparty = require('multiparty');
 const {v4: uuidv4 } = require('uuid');
-const ObjectId = require('mongoose').Types.ObjectId;
+require('dotenv').config();
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY,

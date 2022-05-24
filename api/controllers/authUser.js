@@ -1,6 +1,16 @@
 const User = require("../models/user");
 const Post = require("../models/post");
-const {body} = require("express-validator");
+const {body, validationResult} = require("express-validator");
+const multiparty = require("multiparty");
+const fs = require("fs");
+const {v4: uuidv4} = require("uuid");
+const AWS = require("aws-sdk");
+require('dotenv').config();
+
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+});
 
 exports.me =  (req, res, next) => {
     User.findById(req.user._id)
@@ -8,14 +18,64 @@ exports.me =  (req, res, next) => {
         .then( user => res.json(user));
 };
 
-exports.me_update = [
-    body('username').trim().escape(),
+exports.me_update_username = [
     (req, res, next) => {
+        console.log('dssssssssssssssssssssssssssssssssssss');
         const username = req.body.username;
         if (username)
-            User.findByIdAndUpdate(req.user._id, { username }).catch(err => next(err) );
+            User.findByIdAndUpdate(req.user._id, { username })
+                .then(()=> res.json({username}))
+                .catch(err => next(err) );
     }
 ];
+
+exports.me_update_prof = async (req, res, next) => {
+    const form = new multiparty.Form();
+    form.parse(req, async (error, fields, files) => {
+        if (error) return res.status(500).json({ err: error });
+        try {
+            if (!files.file) return res.status(409).json({ msg: 'Please provide image file' });
+            const path = files.file[0].path;
+            const blob = fs.readFileSync(path);
+
+            const uploadedImage = await s3.upload({
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Key: uuidv4(),
+                Body: blob,
+            }).promise();
+            const picUrl = uploadedImage.Location;
+            User.findByIdAndUpdate(req.user._id, { picUrl })
+                .then(()=>res.json({picUrl}))
+                .catch(err => next(err));
+        } catch (err) {
+            return res.status(500).json({ err });
+        }
+    });
+};
+
+exports.me_update_bg = async (req, res, next) => {
+    const form = new multiparty.Form();
+    form.parse(req, async (error, fields, files) => {
+        if (error) return res.status(500).json({ err: error });
+        try {
+            if (!files.file) return res.status(409).json({ msg: 'Please provide image file' });
+            const path = files.file[0].path;
+            const blob = fs.readFileSync(path);
+
+            const uploadedImage = await s3.upload({
+                Bucket: process.env.AWS_BUCKET_NAME,
+                Key: uuidv4(),
+                Body: blob,
+            }).promise();
+            const bgUrl = uploadedImage.Location;
+            User.findByIdAndUpdate(req.user._id, { bgUrl })
+                .then(()=>res.json({bgUrl}))
+                .catch(err => next(err));
+        } catch (err) {
+            return res.status(500).json({ err });
+        }
+    });
+};
 
 exports.sendFriendReq = (req, res, next) => {
     User.updateOne({_id: req.params.id}, { $addToSet: { friendReqReceived: req.user._id } })
