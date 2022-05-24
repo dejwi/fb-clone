@@ -10,7 +10,7 @@ const animeOpts = {
   transition:{ type: 'spring', delay: 0.1, duration: 0.35}
 };
 
-const Top: React.FC = () => {
+const Top: React.FC<{reFetch: ()=>void}> = ({reFetch}) => {
   const {user} = useContext(userContext) as UserContext;
   const [showPopup, setShowPopup] = useState(false);
 
@@ -23,7 +23,7 @@ const Top: React.FC = () => {
 
   </motion.div>
     <AnimatePresence exitBeforeEnter>
-    {showPopup && <Top_popup hide={()=>setShowPopup(false)}/>}
+    {showPopup && <Top_popup hide={()=>setShowPopup(false)} reFetch={reFetch}/>}
     </AnimatePresence>
     </>);
 

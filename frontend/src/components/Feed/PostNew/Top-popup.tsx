@@ -7,9 +7,10 @@ import { motion } from 'framer-motion'
 
 interface prop {
   hide: () => void,
+  reFetch: ()=>void
 }
 
-const Top_popup: React.FC<prop> = ({hide}) => {
+const Top_popup: React.FC<prop> = ({hide, reFetch}) => {
   const { register, handleSubmit } = useForm();
   const apiUrl = process.env.REACT_APP_BACKEND as string;
   const {user} = useContext(userContext) as UserContext;
@@ -25,7 +26,10 @@ const Top_popup: React.FC<prop> = ({hide}) => {
 
     setBtnDisabled(true);
     fetchApi('/post', 'POST', formData)
-      .then(() => hide());
+        .then(()=>{
+          hide();
+          reFetch();
+        });
   };
 
   const fileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
