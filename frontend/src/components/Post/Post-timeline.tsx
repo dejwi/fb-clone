@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { motion } from 'framer-motion'
 import Post from './Post'
 
@@ -15,10 +15,16 @@ const PostTimeline: React.FC<props> = ({ posts}) => {
     animate:{ y: 0, opacity: 1},
     transition:{ type: 'tween', duration: 0.15, ease: 'easeInOut'},
   };
+  const [_posts, _setPosts] = useState(posts);
+
+  const removePostLocal = (id: string) => {
+    const newPosts = _posts.filter(e => e._id !== id);
+    _setPosts(newPosts);
+  };
 
   return (
   <motion.main className='flex flex-col gap-5 items-center pb-4' {...animeOpts}>
-    {posts.map(data => <Post {...data} key={data._id} />)}
+    {_posts.map(data => <Post {...data} key={data._id} removeLocal={removePostLocal}/>)}
   </motion.main>);
 };
 

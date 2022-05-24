@@ -5,15 +5,15 @@ import Comment from './Comment';
 import { Link } from 'react-router-dom';
 import { motion, useAnimation } from 'framer-motion';
 import CommentNew from './CommentNew';
-import FetchApi from '../../helpers/fetchApi'
 
 import {ReactComponent as LikeIcon} from '../../svg/like.svg';
 import {ReactComponent as CommentIcon} from '../../svg/comment.svg';
 import {ReactComponent as ShareIcon} from '../../svg/share.svg';
 import LikeBlue from '../likeBlue';
 import fetchApi from '../../helpers/fetchApi'
+import Menu from './Menu';
 
-const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, likes, picUrl, comments, _id}) => {
+const Post: React.FC<PostType & {author: UserType, removeLocal: (id:string)=>void}> = ({ author, content, date, likes, picUrl, comments, _id, removeLocal}) => {
   const {user, setUser} = useContext(userContext) as UserContext;
   const input = useRef<HTMLInputElement | null>(null);
   const [_comments, _setComments] = useState(comments);
@@ -21,6 +21,7 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
   const [isLiked, setIsLiked] = useState<boolean>(user?.liked.includes(_id as never) as boolean);
   const [likeCount, setLikeCount] = useState(likes);
   const likeControl = useAnimation();
+  const isAuthor = author._id === user?._id;
 
   const likeVariants = {
     liked: {
@@ -61,6 +62,11 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
     setIsLiked(!isLiked);
   };
 
+  const removePost = () => {
+    fetchApi(`/post/${_id}`, 'DELETE');
+    removeLocal(_id);
+  };
+
   useEffect(()=>{
     if(isLiked)
       likeControl.start('liked');
@@ -72,12 +78,13 @@ const Post: React.FC<PostType & {author: UserType}> = ({ author, content, date, 
   const btnClass = 'flex items-center text-neutral-500 px-4 py-1 transition-[background] hover:bg-neutral-100 -my-0.5 rounded-md text-[0.85rem] ';
 
   return (<article className='w-[21.5rem] flex flex-col bg-white p-2.5 shadow rounded-md'>
-    <div className='flex items-center'>
+    <div className='grid grid-cols-postTop items-center'>
       <Link to={`/user/${author._id}`}><img alt='avatar' src={author.picUrl} className='h-9 w-9 rounded-full' loading='lazy'/></Link>
       <div className='flex flex-col ml-1'>
         <Link to={`/user/${author._id}`} className='-mb-1.5 font-semibold'>{author.username}</Link>
         <span className='text-neutral-500 text-sm'>{niceDate(date)}</span>
       </div>
+      {isAuthor && <Menu isAuthor={isAuthor} removePost={removePost}/>}
     </div>
 
     <p className='mt-1'>{content}</p>
