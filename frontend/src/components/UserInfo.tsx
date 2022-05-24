@@ -69,7 +69,7 @@ const UserInfo: React.FC<props> = ({profile}) =>{
 
   return (<motion.div className='flex flex-col mb-5 items-center' {...animeOpts}>
     <div className='w-[22.5rem] h-36 bg-gray-200 rounded-b-xl overflow-hidden relative z-20'>
-      {!!bgUrl && <img src={bgUrl} alt='background' className='object-contain w-full'/>}
+      {!!bgUrl && <img src={bgUrl} alt='background' className='object-cover w-full h-full'/>}
       {isOwner && <label className='absolute right-0 bottom-0 w-5 h-5 fill-neutral-800'><input type='file' accept="image/*" className='hidden' onChange={bgChange}/><EditIcon/></label>}
     </div>
     <div className='flex flex-col items-center -mt-[4rem]'>
