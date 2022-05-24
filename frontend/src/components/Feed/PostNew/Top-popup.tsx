@@ -33,10 +33,23 @@ const Top_popup: React.FC<prop> = ({hide}) => {
       setFileName(e.target.files[0].name);
   };
 
-  return (<motion.div onClick={()=>hide()} className='fixed top-0 left-0 bg-neutral-600 bg-opacity-40 h-screen w-full z-50 flex items-center justify-center'
-                      initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} transition={{duration: 0.25}}>
+  const animeOptsBg = {
+    initial:{ opacity: 0},
+    animate:{ opacity: 1},
+    exit: { opacity: 0},
+    transition:{ type: 'spring', duration: 0.25}
+  };
 
-      <form onClick={e=>e.stopPropagation()} onSubmit={handleSubmit(onSubmit)} className='flex flex-col bg-white shadow-md px-4 rounded-md pb-2 -mt-28'>
+  const animeOptsConf = {
+    initial: { opacity: 0, scale: 0.55},
+    animate: { opacity: 1, scale: 1},
+    exit: { opacity: 0, scale: 0.55, transition: {type: 'tween', duration: 0.15, ease: 'easeIn'}},
+    transition:{ type: 'spring', duration: 0.4}
+  };
+
+  return (<><motion.div className='fixed top-0 left-0 h-screen w-full z-50 flex items-center justify-center pointer-events-none'
+                        {...animeOptsConf}>
+      <form onClick={e=>e.stopPropagation()} onSubmit={handleSubmit(onSubmit)} className='flex flex-col bg-white shadow-md px-4 rounded-md pb-2 -mt-28 pointer-events-auto'>
         <div className='flex items-center gap-1.5 py-2.5'>
           <img alt='avatar' src={user?.picUrl} className='w-12 h-12 min-w-[3rem] rounded-full'/>
           <div className='relative w-full'>
@@ -62,7 +75,10 @@ const Top_popup: React.FC<prop> = ({hide}) => {
           <span className='text-sm text-zinc-400'>{fileName}</span>
         </div>
       </form>
-  </motion.div>)
+  </motion.div>
+  <motion.div onClick={()=>hide()} className='fixed top-0 left-0 bg-neutral-600 bg-opacity-40 h-screen w-full z-40'
+              {...animeOptsBg}></motion.div>
+  </>)
 };
 
 export default Top_popup;
