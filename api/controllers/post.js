@@ -79,7 +79,7 @@ exports.post_new = async (req, res, next) => {
 exports.delete = (req, res, next) => {
     Post.findOne({_id: req.params.id}).then(post => {
         if (!post) return res.status(404).json({msg: "Not found"});
-        if (post.author !== req.user._id) return res.status(401).json({error: "You are not the author of this post"});
+        if (post.author.toString() !== req.user._id.toString()) return res.status(401).json({error: "You are not the author of this post"});
 
         Post.findByIdAndRemove(req.params.id)
             .then(doc => res.json(doc))
