@@ -78,7 +78,7 @@ const User: React.FC = () => {
     <motion.div className='flex flex-col items-center w-screen max-w-full' {...exitOpt}>
       <AnimatePresence exitBeforeEnter>
       {_user ?
-        <><UserInfo user={_user} />
+        <><UserInfo profile={_user} />
           <AnimatePresence exitBeforeEnter>
           {(!!localUser && !localUser?.friends.includes(_user._id as never) && !localUser?.friendReqSend.includes(_user._id as never) && localUser?._id !== _user._id) &&
             (localUser?.friendReqReceived.includes(_user._id as never) ?
