@@ -14,6 +14,7 @@ import Friends from './pages/Friends'
 import FriendsDiscover from './pages/FriendsDiscover'
 import Logout from './pages/Logout'
 import Auth from './pages/Auth'
+import Chat from './pages/Chat'
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_BACKEND as string;
@@ -40,7 +41,7 @@ const App: React.FC = () => {
     })();
   },[]);
 
-  return (<div className='bg-stone-100 min-h-screen'>{
+  return (<div className='bg-stone-100 min-h-screen flex flex-col'>{
     isLoading ?
         <div className='h-screen flex justify-center items-center'>
           <DotPulse color={'#181818'}/>
@@ -62,6 +63,7 @@ const App: React.FC = () => {
                 <Route path='/friends' element={ <Friends/> }/>
                 <Route path='/friendsfeed' element={ <FriendsFeed/> }/>
                 <Route path='/newfriends' element={ <FriendsDiscover/> }/>
+                <Route path='/chat' element={ <Chat/> }/>
                 <Route path='/logout' element={ <Logout changeAuth={()=>setAuth(false)}/> }/>
 
               </>}

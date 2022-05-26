@@ -26,6 +26,18 @@ type UserContext = {
     setUser: (updt: any) => void
 };
 
+interface ChatMessage {
+    from: string,
+    content: string,
+    _id: string
+}
+
+interface Chat {
+    between: [id1: string, id2: string],
+    messages: ChatMessage[],
+    _id: string
+}
+
 declare module "*.svg" {
     import React = require("react");
     const src: React.FC<React.SVGProps<SVGSVGElement>>;
