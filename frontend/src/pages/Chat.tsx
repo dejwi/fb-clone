@@ -81,13 +81,13 @@ const Chat: React.FC = () => {
     };
 
 
-    return (<div className='grid grid-cols-chat grid-rows-chat flex-1'>
-        <div className='flex flex-col h-full row-span-2 gap-1.5 items-center pt-1'>
+    return (<div className='grid grid-cols-chat grid-rows-chat flex-1 max-h-full'>
+        <div className='flex flex-col h-full max-h-full row-span-2 gap-1.5 items-center pt-1'>
         {/*@ts-ignore*/}
         <AnimateSharedLayout >
         {!!friends &&
             friends.map((e) => (selected === e._id ?
-                    <div className='relative' key={e._id}>
+                    <div className='relative rounded-full' key={e._id}>
                         <img alt='avatar' onClick={()=>setSelected(e._id)} src={e.picUrl} className={`w-14 h-14 rounded-full p-0.5 `} />
                         <motion.div layoutId='outline' initial={false} transition={{
                             type: "spring",
