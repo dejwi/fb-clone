@@ -44,6 +44,8 @@ router.get('/friendsfeed', auth, authUserController.friendsfeed);
 router.get('/fdetail', auth, authUserController.friendninviteDetail);
 router.get('/discovernew', auth, authUserController.discoverNewFriends);
 
+router.get('/chats', auth, authUserController.getChats);
+
 router.get('/logout', auth, authUserController.logout);
 
 module.exports = router;

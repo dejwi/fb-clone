@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Post = require("../models/post");
+const Chat = require('../models/chat');
 const {body, validationResult} = require("express-validator");
 const multiparty = require("multiparty");
 const fs = require("fs");
@@ -139,4 +140,10 @@ exports.removeFriend = (req, res, next) => {
                 .then(()=>res.json({msg: 'Done'}))
                 .catch(err => next(err));
         }).catch(err => next(err));
+};
+
+exports.getChats= (req, res, next) => {
+    Chat.find({ between: req.user._id })
+        .then(chat => res.json(chat))
+        .catch(err => next(err));
 };
