@@ -45,8 +45,8 @@ const PageSwitch: React.FC = () => {
     </>}
 
     {current === 'chat' && <>
-      <Link to={'/'}><HomeOut className={iconClass + ' fill-neutral-500'}/></Link>
-      <Link to={'/friendsfeed'}><People className={iconClass + ' fill-neutral-500'}/></Link>
+      <Link to={'/'} replace={true}><HomeOut className={iconClass + ' fill-neutral-500'}/></Link>
+      <Link to={'/friendsfeed'}><PeopleOut className={iconClass + ' fill-neutral-500'}/></Link>
       <Link to={'/chat'}><Chat className={iconClass + ' fill-neutral-800'}/></Link>
     </>}
 
