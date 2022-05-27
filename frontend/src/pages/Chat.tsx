@@ -93,9 +93,12 @@ const Chat: React.FC = () => {
                             type: "spring",
                             stiffness: 300,
                             damping: 30
-                        }} className='outline outline-2 outline-indigo-900 w-14 h-14 rounded-full absolute top-0'></motion.div>
+                        }} className='border-2 border-indigo-900 w-[3.75rem] h-[3.75rem] rounded-full absolute -top-0.5 -left-0.5'></motion.div>
                     </div>
-            : <img alt='avatar' key={e._id+'img'} onClick={()=>setSelected(e._id)} src={e.picUrl} className={`w-14 h-14 rounded-full p-0.5 `} />
+            :
+            <div className='relative rounded-full' key={e._id}>
+                <img alt='avatar' onClick={()=>setSelected(e._id)} src={e.picUrl} className={`w-14 h-14 rounded-full p-0.5 `} />
+            </div>
             ))
         }
         </AnimateSharedLayout>
