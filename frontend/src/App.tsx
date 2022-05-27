@@ -53,6 +53,7 @@ const App: React.FC = () => {
             <Routes key={location.pathname} location={location}>
               {!isAuth ?<>
                 <Route path='/auth/:token' element={ <Auth/> }/>
+                <Route path='/auth/:token/*' element={ <Auth/> }/>
                 <Route path='/*' element={<Login/>}/>
               </>: <>
 

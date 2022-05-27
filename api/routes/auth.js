@@ -26,7 +26,7 @@ router.get('/google/callback',
         failureRedirect: '/auth/google',
     }), (req, res) => {
         const token = req.user.token;
-        res.redirect(`${process.env.FRONTEND_URL}/auth/${token}`);
+        res.redirect(`${process.env.FRONTEND_URL}/auth/${token}/`);
     }
 );
 
