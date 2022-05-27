@@ -3,7 +3,8 @@ import fetchApi from "../helpers/fetchApi";
 import ChatMessages from '../components/Chat/ChatMessages';
 import { io } from "socket.io-client";
 import {userContext} from "../userContext";
-import {motion, AnimateSharedLayout} from "framer-motion";
+import {motion, AnimateSharedLayout, AnimatePresence} from "framer-motion";
+import ChatSkeleton from '../components/Skeleton/Chat-skeleton';
 
 interface recivedMess {
     between: [],
@@ -80,15 +81,27 @@ const Chat: React.FC = () => {
         setInputTxt('');
     };
 
+    const animeOpts = {
+        initial:{ y: -20 , opacity: 0, transition: {delay: 0.5}},
+        animate:{ y: 0, opacity: 1},
+        transition:{ type: 'tween', duration: 0.15, ease: 'easeInOut'},
+        exit: {
+            y: 30,
+            opacity: 0,
+            transition: {duration: 0.3},
+        }
+    };
 
-    return (<div className='grid grid-cols-chat grid-rows-chat flex-1 max-h-full'>
+    return (<>
+        {isLoadingSocket || isLoading ? <ChatSkeleton /> :
+        <motion.div className='grid grid-cols-chat grid-rows-chat flex-1 max-h-full' {...animeOpts}>
         <div className='flex flex-col h-full max-h-full row-span-2 gap-1.5 items-center pt-1'>
         {/*@ts-ignore*/}
         <AnimateSharedLayout >
         {!!friends &&
             friends.map((e) => (selected === e._id ?
                     <div className='relative rounded-full' key={e._id}>
-                        <img alt='avatar' onClick={()=>setSelected(e._id)} src={e.picUrl} className={`w-14 h-14 rounded-full p-0.5 `} />
+                        <img alt='avatar' onClick={()=>setSelected(e._id)} src={e.picUrl} className='w-14 h-14 rounded-full p-0.5 ' />
                         <motion.div layoutId='outline' initial={false} transition={{
                             type: "spring",
                             stiffness: 300,
@@ -103,16 +116,18 @@ const Chat: React.FC = () => {
         }
         </AnimateSharedLayout>
         </div>
-
-        {!!chats && !!selected &&
             <div className='w-full relative overflow-hidden'>
-            <ChatMessages chat={chats.find(e => e.between.includes(selected)) as Chat}/>
+            <AnimatePresence exitBeforeEnter>
+            {!!chats && !!selected &&
+            <ChatMessages chat={chats.find(e => e.between.includes(selected)) as Chat} key={selected}/>
+            }
+            </AnimatePresence>
             </div>
-        }
-        <form onSubmit={sendMessage} className='flex w-full h-full'>
+        <form onSubmit={sendMessage} className='flex w-full h-full row-start-2 col-start-2'>
             <input type='text' placeholder='Type your message...' value={inputTxt} onChange={e=>setInputTxt(e.target.value)} className='pl-3.5 mr-1 my-2.5 w-full rounded-md shadow-sm'/>
         </form>
-    </div>)
+    </motion.div>}
+    </>)
 };
 
 export default Chat;
