@@ -51,9 +51,9 @@ const App: React.FC = () => {
             {isAuth && <Nav/>}
             <AnimatePresence exitBeforeEnter>
             <Routes key={location.pathname} location={location}>
-              {!isAuth ?<>
                 <Route path='/auth/:token' element={ <Auth/> }/>
                 <Route path='/auth/:token/*' element={ <Auth/> }/>
+              {!isAuth ?<>
                 <Route path='/*' element={<Login/>}/>
               </>: <>
 
