@@ -32,29 +32,21 @@ const PageSwitch: React.FC = () => {
   },[loc.pathname]);
 
   return (<div className='justify-self-center flex gap-2'>
-    {current === 'home' && <>
+    {current === 'home' ?
       <Link to={'/'}><Home className={iconClass + ' fill-neutral-900 '}/></Link>
-      <Link to={'/friendsfeed'}><PeopleOut className={iconClass + ' fill-neutral-500'}/></Link>
-      <Link to={'/chat'}><ChatOut className={iconClass + ' fill-neutral-500'}/></Link>
-    </>}
-
-    {current === 'friends' && <>
+        :
       <Link to={'/'}><HomeOut className={iconClass + ' fill-neutral-500'}/></Link>
+    }
+    {current === 'friends' ?
       <Link to={'/friendsfeed'}><People className={iconClass + ' fill-neutral-800'}/></Link>
-      <Link to={'/chat'}><ChatOut className={iconClass + ' fill-neutral-500'}/></Link>
-    </>}
-
-    {current === 'chat' && <>
-      <Link to={'/'} replace={true}><HomeOut className={iconClass + ' fill-neutral-500'}/></Link>
+        :
       <Link to={'/friendsfeed'}><PeopleOut className={iconClass + ' fill-neutral-500'}/></Link>
+    }
+    {current === 'chat' ?
       <Link to={'/chat'}><Chat className={iconClass + ' fill-neutral-800'}/></Link>
-    </>}
-
-    {current === 'none' && <>
-      <Link to={'/'}><HomeOut className={iconClass + ' fill-neutral-500'}/></Link>
-      <Link to={'/friendsfeed'}><PeopleOut className={iconClass + ' fill-neutral-500'}/></Link>
+        :
       <Link to={'/chat'}><ChatOut className={iconClass + ' fill-neutral-500'}/></Link>
-    </>}
+    }
   </div>);
 };
 
