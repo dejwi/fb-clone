@@ -1,6 +1,6 @@
 # Dejwibook
 FullStack project: React, Express with authorization, live-time chat | more ↓
-### [live demo](dejwibook.vercel.app)
+### [live demo](https://dejwibook.vercel.app)
 ### Preview
 ![lawst](https://user-images.githubusercontent.com/80927085/170881641-8c4f7de5-20b8-489c-be70-5233d5cef5d1.gif)
 
