@@ -18,15 +18,15 @@ FullStack project: React, Express with authorization, live-time chat | more ↓
 - Friends
   - invite & accept & remove
 - Styling done with Tailwindcss
+- Typescript
+- MongoDB to store data
+- AWS s3 bucket to store images
 - Main pages
   - Feed - latest posts
   - Friends Feed
   - Friends & accept invites
   - Discover new friends
   - Profile pages
-- Typescript
-- MongoDB to store data
-- AWS s3 bucket to store images
 
 ### How to run localy
 - install dependencies
