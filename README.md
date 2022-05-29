@@ -29,7 +29,7 @@ FullStack project: React, Express with authorization, live-time chat | more ↓
   - Profile pages
 
 ### How to run localy
-- install dependencies
+- install dependencies at /api & /frontend
 - NOTE: def means it's a default host url on run start
 - NOTE: you can go without AWS just delete its usage from api controllers and routes
 - both npm run start
