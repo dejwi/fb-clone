@@ -8,6 +8,7 @@ const Auth: React.FC = () => {
   useEffect(()=> {
       window.localStorage.setItem('token', token as string);
       nav('/');
+      window.location.reload();
   }, []);
 
   return (<div></div>)
