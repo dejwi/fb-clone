@@ -11,6 +11,7 @@ FullStack project: React, Express with authorization, live-time chat | more ↓
 - Backend authorization
   - Google & Facebook signup options
   - managed with jwt (jsonwebtoken)
+  - all of it accomplished with passportjs
 - Posts
   - create & delete & comment & like
 - Live-time chat with your friends!!
