@@ -17,7 +17,7 @@ FullStack project: React, Express with authorization, live-time chat | more ↓
   - implemented with socket.io
 - Friends
   - invite & accept & remove
-- Styling done with Tailwindcss
+- Styling /w Tailwindcss
 - Typescript
 - MongoDB to store data
 - AWS s3 bucket to store images
