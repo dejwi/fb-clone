@@ -33,7 +33,7 @@ FullStack project: React, Express with authorization, live-time chat | more ↓
 
 ### WARNING
 I was on a big crunch creating this project, whole days non-stop and now I need to complete other projects
-- there's some(maybe more) things that should be moved to separate components
+- There're some(maybe more) things that should be moved to separate components
 - I've learned that I should've put classes somewhere else
 
 ### How to run localy
