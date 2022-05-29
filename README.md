@@ -31,6 +31,11 @@ FullStack project: React, Express with authorization, live-time chat | more ↓
   - Discover new friends
   - Profile pages
 
+### WARNING
+I was on a big crunch creating this project, whole days non-stop and now I need to do other things
+- there's some(maybe more) things that should be moved to separate components
+- I've learned that I should've put classes somewhere else
+
 ### How to run localy
 - install dependencies at /api & /frontend
 - NOTE: def means it's a default host url on run start
