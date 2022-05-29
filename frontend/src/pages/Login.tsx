@@ -25,7 +25,7 @@ const Login: React.FC = () => {
         <motion.a whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} href={`${apiUrl}/auth/google`} >
             <img alt='signin google' src={googleSignin} className='w-[12.35rem]'/>
         </motion.a>
-        <motion.a whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} className='bg-white text-sm font-[Poppins] shadow text-neutral-500 py-1.5 w-[12rem] text-center rounded'
+        <motion.a whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} className='bg-white font-medium text-sm shadow text-[#757575] py-1.5 w-[12rem] text-center rounded'
                   href={`/auth/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjhiYmY1MWMwMDdmZjgxOTQzNTA0MzUiLCJpYXQiOjE2NTM4NTY1MDMsImV4cCI6MTY1NDExNTcwM30.vwIVAHSFjfoyGsNoLCHM7VpWlwo1q8gRjNepSlMvz3Q`} >
             Demo Account
         </motion.a>
