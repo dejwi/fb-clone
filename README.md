@@ -17,6 +17,8 @@ FullStack project: React, Express with authorization, live-time chat | more ↓
   - implemented with socket.io
 - Friends
   - invite & accept & remove
+- Editing profile
+  - Usernane & profile picture & background picture
 - Styling /w Tailwindcss
 - Typescript
 - MongoDB to store data
