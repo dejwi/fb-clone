@@ -1,4 +1,4 @@
-# fb-clone
+# Dejwibook
 FullStack project: React, Express with authorization, live-time chat | more ↓
 ### [live demo](dejwibook.vercel.app)
 ### Preview
