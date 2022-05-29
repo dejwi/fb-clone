@@ -18,7 +18,7 @@ FullStack project: React, Express with authorization, live-time chat | more ↓
 - Friends
   - invite & accept & remove
 - Editing profile
-  - Usernane & profile picture & background picture
+  - Username & profile picture & background picture
 - Styling /w Tailwindcss
 - Typescript
 - MongoDB to store data
