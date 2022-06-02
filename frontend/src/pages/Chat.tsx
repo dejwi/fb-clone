@@ -18,6 +18,7 @@ const Chat: React.FC = () => {
     const [chats, setChats] = useState<Chat[]>();
     const [socket, setSocket] = useState<any>();
     const [inputTxt, setInputTxt] = useState('');
+    const [noFriends, setNoFriends] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingSocket, setIsLoadingSocket] = useState(true);
@@ -32,15 +33,18 @@ const Chat: React.FC = () => {
             const _chats = await ress.json() as Chat[];
             const _friends = data.friends as UserType[];
 
+            if(_friends.length === 0)
+                return setNoFriends(true);
+
             const filled = _friends.map(e => {
                 const index = _chats.findIndex(el => el.between.includes(e._id));
                 if(index !== -1) return _chats[index];
                 return {between: [user?._id , e._id], messages: []};
             })
+            setIsLoading(false);
             setFriends(_friends);
             setChats(filled as Chat[]);
             setSelected(_friends[0]._id);
-            setIsLoading(false);
         })();
     },[user]);
 
@@ -93,7 +97,8 @@ const Chat: React.FC = () => {
     };
 
     return (<>
-        {isLoadingSocket || isLoading ? <ChatSkeleton /> :
+        {noFriends ? <p className='text-center text-neutral-400 mt-2'>no friends:(</p> :
+        (isLoadingSocket || isLoading) ? <ChatSkeleton /> :
         <motion.div className='grid grid-cols-chat grid-rows-chat flex-1 max-h-full' {...animeOpts}>
         <div className='flex flex-col h-full max-h-full row-span-2 gap-1.5 items-center pt-1'>
         {/*@ts-ignore*/}
