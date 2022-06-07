@@ -26,7 +26,7 @@ const Login: React.FC = () => {
             <img alt='signin google' src={googleSignin} className='w-[12.35rem]'/>
         </motion.a>
         <motion.a whileHover={{scale: 1.05}} whileTap={{scale: 0.95}} className='bg-white font-medium text-sm shadow text-[#757575] py-1.5 w-[12rem] text-center rounded'
-                  href={`/auth/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjhiYmY1MWMwMDdmZjgxOTQzNTA0MzUiLCJpYXQiOjE2NTQxODc4MTYsImV4cCI6MTY1NDQ0NzAxNn0.fRvRw6AxUa8LxLpIu-sd_LI6zofR5qHiGjPToTnQdlM`} >
+                  href={`/auth/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjhiYmY1MWMwMDdmZjgxOTQzNTA0MzUiLCJpYXQiOjE2NTQxODc4MTZ9.rTBvmyA5aGfnlIajyc_gCJ6xMOqrbevTRv2TbJ_Km54`} >
             Demo Account
         </motion.a>
         {/*<button className='bg-neutral-700 w-48 text-center py-2 rounded text-white font-medium'>Demo account</button>*/}
